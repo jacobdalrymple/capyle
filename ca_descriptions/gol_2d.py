@@ -20,6 +20,9 @@ import numpy as np
 def transition_func(grid, neighbourstates, neighbourcounts):
     # dead = state == 0, live = state == 1
     # unpack state counts for state 0 and state 1
+
+    print(neighbourstates)
+
     dead_neighbours, live_neighbours = neighbourcounts
     # create boolean arrays for the birth & survival rules
     # if 3 live neighbours and is dead -> cell born
