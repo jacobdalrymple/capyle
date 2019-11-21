@@ -1,0 +1,137 @@
+% Author: Thomas Barratt
+% Version: 1.0
+% This work is licensed under a Creative Commons Attribution 4.0 International License.
+
+\documentclass[11pt, a4paper, titlepage]{article}
+\input{../Packages.tex}
+\usepackage{geometry}
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{multicol}
+
+\geometry{lmargin=37mm, rmargin=25mm}
+
+\hypersetup{pdftitle = Applications of Cellular Automata: Wildfire Spread simulation, pdfauthor = {Thomas Barratt, Jacob Dalrymple}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode=FullScreen, colorlinks, anchorcolor = red, citecolor = blue, urlcolor=blue, filecolor=green, linkcolor=red, plainpages=false}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \pagestyle{fancy}
+\chead{}
+\lhead{University of Sheffield}
+\lfoot{\date{}}
+\cfoot{}
+\rfoot{\thepage}
+% Top and Bottom Line Rules
+% \renewcommand{\headrulewidth}{0.4pt} %0.4pt
+% \renewcommand{\footrulewidth}{0.4pt}
+% \fancyheadoffset{9pt}
+% \fancyfootoffset{9pt}
+% Line spacing
+\renewcommand{\baselinestretch}{1.1} %1.5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\date{}
+
+\title{ \textbf{Applications of Cellular Automata: Wildfire Spread simulation} \\  }
+
+\author{\\ \Large{Thomas Barratt, Jacob Dalrymple  } }
+\date{\today}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman}
+\begin{document}
+\maketitle
+
+\newpage
+
+\section{Abstract}
+
+\section{Introduction}
+
+\begin{displayquote}
+  A brief summary of what you did and what you found.
+\end{displayquote}
+
+\section{Introduction and Background: Literature Review}
+\begin{displayquote}
+  Your brief restatement of the problem
+  that you have been asked to solve. Carry out a search of the literature to identify at least two
+  examples of journal papers that describe CA-based models relevant to this system. What features
+  did they model? What did they predict?
+  
+\end{displayquote}
+  
+  As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how is best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
+
+  Considering the evidence existing papers have used to justify their results can provide a good metric for the accuracy of our results. Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
+
+  There are two notable papers in this field whose outcomes seem to overlap strongly with our intentions. Both of these papers consider simulating real world forest fires using cellular automata. Using the deeper understanding of the problem space that the authors of these papers have will allow us to consider global properties which we may have been unaware.
+
+  \subsection{Paper 1: A CA model for forest fire spread prediction}
+  
+    \subsubsection{Background}
+ 
+    This paper seeks to provide a comprehensive model for modelling wildfires using a cellular automata, designed to include the most impactful properties when considering the spread of wildfire. By comparing their results against that of the 1990 Spetses island wildfires, and iteratively changing constants in their transition functions, the authors simulated forest fire spread to a high degree of accuracy - their final results occupying $5.4km^2$, with the actual fire occupying $5.9km^2$.
+  
+    \subsubsection{Context}  
+    The authors states several key criteria which affect the spread of wildfire across a terrain.
+    \begin{itemize}
+
+      \item Spread and shape of a forest fire front
+      \item The fuel type (type of vegetation)
+      \item Humidity
+      \item Wind speed and direction
+      \item Forest topography (slope and natural barriers), fuel continuity (vegetation thickness)
+      \item Spotting which is a phenomenon where burning material is transferred by the wind or other reasons such as the fling of flaming pinecones to areas that are not adjacent to the fire front.
+    \end{itemize}
+    
+  \subsubsection{Implementation}
+  
+  The CA has four necessary states:
+  
+  $State = 1$: The cell contains no forest fuel. This state may describe the cells corresponding to parts of the city with no vegetation, rural areas with no vegetation etc. We assume that cells that are in this state cannot be burned.
+  
+  $State = 2$: The cell contains forest fuel that has not ignited.
+  
+  $State = 3$: The cell contains forest fuel that is burning.
+  
+  $State = 4$: The cell contained forest fuel that has been burned down.
+  
+  
+  \subsubsection{Conclusion}
+
+  \subsection{Comparison between literature, insight and relevance to this implementation}
+  The two papers discussed above implement the idea of 'fuel' in different ways. \cite{ALEXANDRIDIS2008191} structures fuel as a property of the states, whereas \textbf{Jacob's Paper} provides different states for different levels of fuel. 
+  
+  The advantage of moving the fuel state into an attribute of the cell is the greater precision of fuel that can be stored, while also maintaining a smaller amount of states. By limiting fuel state to discrete variables, the forest fire spread will lose valuable resolution which can be maintained with a different data structure.
+
+\section{Methodology}
+\begin{displayquote}
+  - A short summary (IN YOUR OWN WORDS) of how the CA approach can
+  be applied to model a forest fire. This should assume that the reader is a non-expert in modelling or
+  Computer Science in general. You should explain in English (as opposed to simply using code), how
+  you have extended the model you have been given in order to investigate the features mentioned.
+  You can also use simple flow or state transition diagrams to support you description. You can also
+  refer to relevant python code included in an appendix.
+  It is expected that in extending/developing your model you will have to make some assumptions
+  about how to implement particular behaviours, and also in terms of the parameters (values) you
+  choose to use e.g. to represent different fuel resources/burning times. You are not expected to
+  become experts in this area but you should at state justify any assumptions you make.
+\end{displayquote}
+
+\section{Results}
+\begin{displayquote}
+  In this section you should describe what simulations you
+carried out under which conditions (e.g. parameter sets mentioned above, wind direction,…) and
+how long the simulation was run for. You should use fully labelled diagrams (e.g. screenshots or
+where appropriate, line graphs) to display your results and you should also describe your results in
+text. Additional results can be included in an appendix
+\end{displayquote}
+
+\newpage
+\section{Discussion of model and Conclusions} 
+\section{Conclusion}
+
+\newpage
+\renewcommand{\bibname}{Bibliography}
+\bibliographystyle{apacite}
+\bibliography{Bibliography.bib}
+
+
+\end{document}

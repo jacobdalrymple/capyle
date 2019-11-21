@@ -1,0 +1,42 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Alexandridis%
+, Vakalis%
+, Siettos%
+\BCBL {}\ \BBA {} Bafas%
+}{%
+Alexandridis%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2008}}%
+}]{%
+ALEXANDRIDIS2008191}
+\APACinsertmetastar {%
+ALEXANDRIDIS2008191}%
+\begin{APACrefauthors}%
+Alexandridis, A.%
+, Vakalis, D.%
+, Siettos, C.%
+\BCBL {}\ \BBA {} Bafas, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A cellular automata model for forest fire spread
+  prediction: The case of the wildfire that swept through Spetses Island in
+  1990} {A cellular automata model for forest fire spread prediction: The case
+  of the wildfire that swept through spetses island in 1990}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Applied Mathematics and Computation}{204}{1}{191 -
+  201}.
+\newblock
+\begin{APACrefURL}
+  \url{http://www.sciencedirect.com/science/article/pii/S0096300308004943}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{https://doi.org/10.1016/j.amc.2008.06.046}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
