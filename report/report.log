@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  21 NOV 2019 13:01
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  21 NOV 2019 13:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/mnt/d/ATUOS/CSAI/y3/bio/report/report.tex
-(/mnt/d/ATUOS/CSAI/y3/bio/report/report.tex
+**/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex
+(/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex
 LaTeX2e <2018-12-01>
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
@@ -22,7 +22,7 @@ File: size11.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-) (../Packages.tex (/usr/local/texlive/2019/texmf-dist/tex/latex/base/fontenc.sty
+) (./Packages.tex (/usr/local/texlive/2019/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2018/08/11 v2.0j Standard LaTeX package
  (/usr/local/texlive/2019/texmf-dist/tex/latex/base/t1enc.def
 File: t1enc.def 2018/08/11 v2.0j Standard LaTeX file
@@ -1537,12 +1537,12 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 53039B71EC3BA882A61AA80C56BFC241.
  ) 
 Here is how much of TeX's memory you used:
- 46014 strings out of 492909
- 920742 string characters out of 6132923
- 1126938 words of memory out of 5000000
+ 46013 strings out of 492909
+ 920756 string characters out of 6132923
+ 1126932 words of memory out of 5000000
  49262 multiletter control sequences out of 15000+600000
  578653 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 63i,8n,92p,1064b,878s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 63i,8n,92p,1068b,878s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.xdv (6 pages, 23236 bytes).
+Output written on report.xdv (6 pages, 23228 bytes).
