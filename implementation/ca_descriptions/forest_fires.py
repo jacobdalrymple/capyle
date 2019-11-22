@@ -47,8 +47,11 @@ def setup(args):
 ### Vectorised function to reduce fuel based on 5 property arrays given
 def reduce_fuel(height, wind, rate_of_flam, humidity, fuel):
 
-    with_spare_fuel = (fuel - rate_of_flam) >= 0
-    fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
+    # with_spare_fuel = (fuel - rate_of_flam) >= 0
+    # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
+    
+    fuel = (fuel - rate_of_flam).clip(min=0)
+    
     return np.array([height, wind, rate_of_flam, humidity, fuel]).T
 
 
