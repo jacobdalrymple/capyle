@@ -12,10 +12,9 @@ sys.path.append(main_dir_loc + 'capyle/ca')
 sys.path.append(main_dir_loc + 'capyle/guicomponents')
 # ---
 
-from capyle.ca import Grid2D, Neighbourhood, randomise2d
-import capyle.utils as utils
 import numpy as np
-
+import capyle.utils as utils
+from capyle.ca import Grid2D, Neighbourhood, randomise2d
 
 def setup(args):
     """Set up the config object used to interact with the GUI"""
@@ -26,13 +25,13 @@ def setup(args):
     config.dimensions = 2
 
     #config.states = (0,1,2,3,4,5,6,7,8,9,10)
-    config.states = (0,1,2,3)
+    config.states = (0, 1, 2, 3)
     # -------------------------------------------------------------------------
 
     # ---- Override the defaults below (these may be changed at anytime) ----
 
-    config.state_colors = [(0,1,0),(1,0,0),(1,0,0),(1,0,0),(1,0,0),(1,0,0),
-                           (1,0,0),(1,0,0),(1,0,0),(1,0,0),(0,0,0)]
+    config.state_colors = [(0, 1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0),
+                           (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 0, 0)]
 
     # ----------------------------------------------------------------------
 
@@ -45,31 +44,82 @@ def setup(args):
     return config
 
 
-def reduce_fuel( height, wind, rate_of_flam, fuel):
-    return np.array([height, wind, rate_of_flam, (fuel - rate_of_flam)])
+### Vectorised function to reduce fuel based on 5 property arrays given
+def reduce_fuel(height, wind, rate_of_flam, humidity, fuel):
+
+    with_spare_fuel = (fuel - rate_of_flam) >= 0
+    fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
+    return np.array([height, wind, rate_of_flam, humidity, fuel]).T
+
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     """Function to apply the transition rules
     and return the new grid"""
     # unpack the state arrays
 
+    #Generate a mask of those on fire
     on_fire = grid == 2
+
+    #Generate a mask of those not on fire, but can be
     fireable = grid == 1
 
-    cells_on_fire  = grid[on_fire]
-    cells_fireable = grid[fireable]
 
-    cells_grid_attribs_on_fire   = grid_attribs[on_fire]
+    #The actual cell state values that are currently on fire
+    #cells_on_fire = grid[on_fire]
+    #The actual cell state values that are able to be on fire, but
+    #not yet
+    #cells_fireable = grid[fireable]
+
+    #The attribs for those cells on fire
+    cells_grid_attribs_on_fire = grid_attribs[on_fire]
+    
+    #The attribs for those not on fire yet, but can be
     cells_grid_attribs_fireable = grid_attribs[fireable]
 
-    print(cells_grid_attribs_fireable.shape)
-    print(cells_grid_attribs_fireable[0].shape)
-    red_fuel = np.vectorize(reduce_fuel)
+    # print("ON_FIRE")
+    # print(on_fire)
+    # print(on_fire.shape)
 
-    cells_grid_attribs_on_fire = red_fuel(cells_grid_attribs_on_fire)
-    grid_attribs[on_fire] = cells_grid_attribs_on_fire
-    #Update
-     
+    # print("\n\n\ CELLS_ON_FIRE")
+    # print(cells_on_fire)
+    # print(cells_on_fire.shape)
+
+    # print("\n\n\n\n")
+    # print(grid_attribs.shape)
+    #print(cells_grid_attribs_on_fire.shape)
+    # print("\n\n\ Average fuel of on fire elements:")
+    # print(np.average(cells_grid_attribs_on_fire[:, 4]))
+
+    #Calculate the reduction of fuel for all those elements that
+    #are currently on fire, and set all those on fire to their newly computed values
+    grid_attribs[on_fire] = reduce_fuel(
+        cells_grid_attribs_on_fire[:, 0], cells_grid_attribs_on_fire[:, 1], cells_grid_attribs_on_fire[:, 2], cells_grid_attribs_on_fire[:, 3], cells_grid_attribs_on_fire[:, 4])
+
+
+    print(grid_attribs.shape)
+
+    #Get a mask of all the cells that have no fuel.
+    burnt_out_mask = grid_attribs[:,:,4] == 0
+    #print(burnt_out_mask.shape)
+    #print(grid.shape)
+
+    #Use that to set all of those to 0, the burnt out state.
+    grid[burnt_out_mask] = 0
+    # print(not_on_fire)
+
+    # print(not_on_fire.shape)
+    # print(grid.shape)
+    # print(not_on_fire)
+    # grid[not_on_fire] = 0
+
+
+    # print(cells_grid_attribs_fireable[0].shape)
+    # red_fuel = np.vectorize(reduce_fuel,  otypes=[np.float64])
+
+    # cells_grid_attribs_on_fire = red_fuel(*cells_grid_attribs_on_fire)
+    # grid_attribs[on_fire] = cells_grid_attribs_on_fire
+    # Update
+
     # print(neighbourstates)
     # print(neighbourstates.shape)
     # NW, N, NE, W, E, SW, S, SE = neighbourstates
@@ -87,7 +137,7 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     # prod = lambda x, y: x*y
     # s = lambda x: 1 if x > 0 else 0
     # l = lambda x, y, w, z: [x, y, w, z]
-    
+
     # #Calculate flammability for that cell
     # add_list = lambda x, y, z, g: s(g)*(x+y+z)
 
@@ -107,7 +157,7 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
 
     #         near_sum = 0
     #         dist_sum = 0
-            
+
     #         #How burnt the cell will be
     #         #So if sums of both = 0, then cell is 0
     #         for k in range(4):
@@ -118,7 +168,7 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
 
     #         #Round to state (0 -> 1)
     #         grid[i][j] += g(near_sum + 0.25*dist_sum)
-        
+
     return grid
 
 
@@ -129,12 +179,12 @@ def main():
 
     grid_attribs = np.zeros((*config.grid_dims, 5))
 
-    #0: Height
-    #1: Wind/Magnitude
-    #2: Flammability
-    #3: Humidity?
-    #4: Fuel
-    grid_attribs[...] = (0, 0.1, 0.1, 0, 0.1)
+    # 0: Height
+    # 1: Wind/Magnitude
+    # 2: Flammability
+    # 3: Humidity?
+    # 4: Fuel
+    grid_attribs[...] = (0, 0.1, 0.1, 0, 1)
 
     # Create grid object using parameters from config + transition function
     grid = Grid2D(config, (transition_function, grid_attribs))
@@ -146,6 +196,7 @@ def main():
     config.save()
     # Save timeline to file
     utils.save(timeline, config.timeline_path)
+
 
 if __name__ == "__main__":
     main()
