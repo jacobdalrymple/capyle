@@ -3,22 +3,21 @@
 % This work is licensed under a Creative Commons Attribution 4.0 International License.
 
 \documentclass[11pt, a4paper, titlepage]{article}
-\input{Packages.tex}
+% \input{Packages.tex}
 \usepackage{geometry}
 \usepackage{csquotes}
 \usepackage{mathtools}
 \usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{apacite}
+\usepackage[title, titletoc]{appendix}
 
-\geometry{lmargin=37mm, rmargin=25mm}
-
-\hypersetup{pdftitle = Applications of Cellular Automata: Wildfire Spread simulation, pdfauthor = {Thomas Barratt, Jacob Dalrymple}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode=FullScreen, colorlinks, anchorcolor = red, citecolor = blue, urlcolor=blue, filecolor=green, linkcolor=red, plainpages=false}
+\geometry{lmargin=37mm, rmargin=25mm} 
+ 
+% \hypersetup{pdftitle = Applications of Cellular Automata: Wildfire Spread simulation, pdfauthor = {Thomas Barratt, Jacob Dalrymple}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode=FullScreen, colorlinks, anchorcolor = red, citecolor = blue, urlcolor=blue, filecolor=green, linkcolor=red, plainpages=false}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \pagestyle{fancy}
-\chead{}
-\lhead{University of Sheffield}
-\lfoot{\date{}}
-\cfoot{}
-\rfoot{\thepage}
+
 % Top and Bottom Line Rules
 % \renewcommand{\headrulewidth}{0.4pt} %0.4pt
 % \renewcommand{\footrulewidth}{0.4pt}
@@ -113,7 +112,14 @@
   about how to implement particular behaviours, and also in terms of the parameters (values) you
   choose to use e.g. to represent different fuel resources/burning times. You are not expected to
   become experts in this area but you should at state justify any assumptions you make.
-\end{displayquote}
+\end{displayquote} 
+
+\begin{itemize}
+  \item Change in height
+\end{itemize}
+If a cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the sum of the weighted sums of the differences in height, the difference in wind magnitude, and the flammability of the cell that is on fire. The probability is then summed for every on fire cell in the neighbourhood.
+
+\[ F = \sum_{ [H, W, F] \in neighbourhood  } w_1 \Delta H + w_2 \Delta W + w_3 F  \]
 
 \section{Results}
 \begin{displayquote}
