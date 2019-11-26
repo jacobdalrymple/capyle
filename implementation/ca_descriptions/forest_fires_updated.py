@@ -117,16 +117,15 @@ def reduce_fuel(height, wind, rate_of_flam, humidity, fuel):
     fuel = (fuel - rate_of_flam).clip(min=0)
     return np.array([height, wind, rate_of_flam, humidity, fuel]).T
 
+def scale(arr, min_, max_):
+    return np.interp(arr, (arr.min(),
+                                    arr.max()), (min_, max_))
 
 def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
-
-    wind_prob = np.interp(wind, (wind.min(), wind.max()), (0, 0.5))
-    height_prob = np.interp(height, (height.min(), height.max()), (0, 0.5))
-
-    prob = on_fire_neighbours*(wind_prob + height_prob + rate_of_flam)
-    normalised_prob = np.interp(prob, (prob.min(), prob.max()), (0, 1))
-
-    return (normalised_prob > 0.5).astype(int)+1
+    prob = scale(on_fire_neighbours, 0.01,2)*(wind + height)
+    normalised_prob = scale(prob, -0.5,1)
+    print(normalised_prob)
+    return (normalised_prob > 0).astype(int)+1
 
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
@@ -149,14 +148,14 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     # print("res.shape")
     # print(res.shape)
 
-    NW, N, NE, W, E, SW, S, SE = neighbourstates
+    # NW, N, NE, W, E, SW, S, SE = neighbourstates
 
-    fire_close = (N == 2) | (E == 2) | (W == 2) | (S == 2)
-    fire_far = (NW == 2) | (NE == 2) | (SW == 2) | (SE == 2)
-    neighbour_on_fire = fire_close | fire_far
+    # fire_close = (N == 2) | (E == 2) | (W == 2) | (S == 2)
+    # fire_far = (NW == 2) | (NE == 2) | (SW == 2) | (SE == 2)
+    # neighbour_on_fire = fire_close | fire_far
 
-    cells_at_fire_risk = neighbour_on_fire & fireable
-    grid[cells_at_fire_risk] = 2
+    # cells_at_fire_risk = neighbour_on_fire & fireable
+    # grid[cells_at_fire_risk] = 2
 
     on_fire = grid == 2
 
@@ -181,12 +180,18 @@ def main():
 
     grid_attribs = np.zeros((*config.grid_dims, 5))
 
+    config.initial_grid = np.ones( config.grid_dims)
+
     # 0: Height - Scalar value
     # 1: Wind/Magnitude - East to West
     # 2: Flammability
     # 3: Humidity?
     # 4: Fuel
-    grid_attribs[...] = (0, 0.1, 0.1, 0, 1)
+    grid_attribs[...] = (1, 0.1, 0.1, 0, 1)
+    grid_attribs[:,:,0 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
+    # grid_attribs[:,:,1 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
+    # print(winds.shape)
+     
 
     # Create grid object using parameters from config + transition function
     grid = Grid2D(config, (transition_function, grid_attribs))
