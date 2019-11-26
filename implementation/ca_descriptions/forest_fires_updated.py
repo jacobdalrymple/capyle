@@ -46,9 +46,13 @@ def setup(args):
         sys.exit()
     return config
 
-near_translations = [[0,1], [-1,0], [0,-1], [1,0]]
-far_translations = [[1,1], [1,-1], [-1,-1], [-1,1]]
-within_bounds = lambda col, row: col < 100 and row < 100
+
+near_translations = [[0, 1], [-1, 0], [0, -1], [1, 0]]
+far_translations = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
+
+
+def within_bounds(col, row): return col < 100 and row < 100
+
 
 def neighbours_on_fire(row, col, neighbours):
 
@@ -76,7 +80,9 @@ def neighbours_on_fire(row, col, neighbours):
 
     return fire_close, fire_far
 
-##Compute fireability for the grid
+# Compute fireability for the grid
+
+
 def ignites(cell_states, cells_attribs, neighbours):
 
     for row in range(len(cell_states)):
@@ -84,14 +90,15 @@ def ignites(cell_states, cells_attribs, neighbours):
 
             ignition_prob = 0
 
-            fire_close, fire_far = neighbours_on_fire(row, col, neighbours[row][col])
+            fire_close, fire_far = neighbours_on_fire(
+                row, col, neighbours[row][col])
 
-            if len(fire_close) >= 1:            
+            if len(fire_close) >= 1:
                 for row1, col1 in fire_close:
                     rate_of_flam = cells_attribs[row1-1, col1-1, 2]
                     ignition_prob += 0.5 * rate_of_flam
-        
-            if len(fire_far) >= 1:            
+
+            if len(fire_far) >= 1:
                 for row2, col2 in fire_far:
                     rate_of_flam = cells_attribs[row2-1, col2-1, 2]
                     ignition_prob += 0.25 * rate_of_flam
@@ -101,7 +108,9 @@ def ignites(cell_states, cells_attribs, neighbours):
 
     return cell_states
 
-### Vectorised function to reduce fuel based on 5 property arrays given
+# Vectorised function to reduce fuel based on 5 property arrays given
+
+
 def reduce_fuel(height, wind, rate_of_flam, humidity, fuel):
     # with_spare_fuel = (fuel - rate_of_flam) >= 0
     # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
@@ -109,33 +118,57 @@ def reduce_fuel(height, wind, rate_of_flam, humidity, fuel):
     return np.array([height, wind, rate_of_flam, humidity, fuel]).T
 
 
+def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
+
+    wind_prob = np.interp(wind, (wind.min(), wind.max()), (0, 0.5))
+    height_prob = np.interp(height, (height.min(), height.max()), (0, 0.5))
+
+    prob = on_fire_neighbours*(wind_prob + height_prob + rate_of_flam)
+    normalised_prob = np.interp(prob, (prob.min(), prob.max()), (0, 1))
+
+    return (normalised_prob > 0.5).astype(int)+1
+
+
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     """Function to apply the transition rules
     and return the new grid"""
 
     fireable = grid == 1
+
+    cells_grid_attribs_fireable = grid_attribs[fireable]
+
+    # neighbours_of_onfire_cells = neighbourcounts[fireable]
+    # neighbours_of_onfire_cells[2]
+    # grid = ignites(grid, grid_attribs, neighbourstates.T)
+    grid[fireable] = ignite(cells_grid_attribs_fireable[:, 0],
+                            cells_grid_attribs_fireable[:, 1],
+                            cells_grid_attribs_fireable[:, 2],
+                            cells_grid_attribs_fireable[:, 3],
+                            cells_grid_attribs_fireable[:, 4],
+                            neighbourcounts[2][fireable]) if grid[fireable].size > 0 else grid[fireable]
+    # print("res.shape")
+    # print(res.shape)
+
     NW, N, NE, W, E, SW, S, SE = neighbourstates
 
     fire_close = (N == 2) | (E == 2) | (W == 2) | (S == 2)
-    fire_far   = (NW == 2) | (NE == 2) | (SW == 2) | (SE == 2)
+    fire_far = (NW == 2) | (NE == 2) | (SW == 2) | (SE == 2)
     neighbour_on_fire = fire_close | fire_far
 
     cells_at_fire_risk = neighbour_on_fire & fireable
     grid[cells_at_fire_risk] = 2
 
-    grid = ignites(grid, grid_attribs, neighbourstates.T)
-
     on_fire = grid == 2
 
     cells_grid_attribs_on_fire = grid_attribs[on_fire]
-    
-    grid_attribs[on_fire] = reduce_fuel(cells_grid_attribs_on_fire[:, 0], 
-                                        cells_grid_attribs_on_fire[:, 1], 
-                                        cells_grid_attribs_on_fire[:, 2], 
-                                        cells_grid_attribs_on_fire[:, 3], 
+
+    grid_attribs[on_fire] = reduce_fuel(cells_grid_attribs_on_fire[:, 0],
+                                        cells_grid_attribs_on_fire[:, 1],
+                                        cells_grid_attribs_on_fire[:, 2],
+                                        cells_grid_attribs_on_fire[:, 3],
                                         cells_grid_attribs_on_fire[:, 4])
 
-    burnt_out = grid_attribs[:,:,4] == 0
+    burnt_out = grid_attribs[:, :, 4] == 0
     grid[burnt_out] = 0
 
     return grid

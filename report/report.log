@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  26 NOV 2019 08:32
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  26 NOV 2019 09:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -311,30 +311,32 @@ Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@pps=\count136
 \c@@ppsavesec=\count137
 \c@@ppsaveapp=\count138
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2019-01-16 v2.0c non-zero parskip adjustments
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
  (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -387,7 +389,7 @@ File: xetex.def 2017/06/24 v5.0h Graphics/color driver for xetex
 \Gin@req@width=\dimen143
 )
 \AtBeginShipoutBox=\box56
-Package hyperref Info: Link coloring OFF on input line 37.
+Package hyperref Info: Link coloring OFF on input line 38.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/12 v2.45 Cross-referencing by name of section
  (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -395,9 +397,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count139
 )
-LaTeX Info: Redefining \ref on input line 37.
-LaTeX Info: Redefining \pageref on input line 37.
-LaTeX Info: Redefining \nameref on input line 37.
+LaTeX Info: Redefining \ref on input line 38.
+LaTeX Info: Redefining \pageref on input line 38.
+LaTeX Info: Redefining \nameref on input line 38.
  (./report.out) (./report.out)
 \@outlinefile=\write3
 \openout3 = `report.out'.
@@ -411,35 +413,40 @@ LaTeX Info: Redefining \BHBI on input line 130.
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 ) [1
 
-] [1]
-Missing character: There is no   in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no   in font cmr10!
-
-Overfull \hbox (10.55919pt too wide) in paragraph at lines 99--100
-\TU/lmr/m/n/10.95 The two papers discussed above implement the idea of ’fuel’ in different ways. [][]Alexandridis,
+]
+Overfull \hbox (5.5142pt too wide) in paragraph at lines 66--66
+[] \TU/lmr/bx/n/12 Paper 1: A CA model for forest fire spread prediction [][]Alexandridis,
  []
 
-[2] [3] [4] (./report.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 143.
- [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 143.
+[1]
+Missing character: There is no   in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no   in font cmr10!
+ [2]
+Overfull \hbox (7.51509pt too wide) in paragraph at lines 114--115
+\TU/lmr/m/n/10.95 The two papers discussed above implement the idea of ’fuel’ in different ways. [][]Alexandridis
+ []
+
+[3] [4] [5] [6] (./report.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 208.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 208.
  (./report.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 143.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 143.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 208.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 208.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 53039B71EC3BA882A61AA80C56BFC241.
+(rerunfilecheck)             Checksum: BB5B6BD8F65CB0BA361335041A1EAB10.
  ) 
 Here is how much of TeX's memory you used:
- 11114 strings out of 492909
- 157644 string characters out of 6132923
- 269886 words of memory out of 5000000
- 15084 multiletter control sequences out of 15000+600000
+ 11136 strings out of 492909
+ 158147 string characters out of 6132923
+ 269356 words of memory out of 5000000
+ 15103 multiletter control sequences out of 15000+600000
  8630 words of font info for 41 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 33i,7n,45p,856b,473s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 33i,7n,45p,856b,425s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.xdv (6 pages, 64824 bytes).
+Output written on report.xdv (8 pages, 89692 bytes).

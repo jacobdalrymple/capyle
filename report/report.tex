@@ -11,6 +11,7 @@
 \usepackage{hyperref}
 \usepackage{apacite}
 \usepackage[title, titletoc]{appendix}
+\usepackage[parfill]{parskip}
 
 \geometry{lmargin=37mm, rmargin=25mm} 
  
@@ -48,21 +49,21 @@
 \end{displayquote}
 
 \section{Introduction and Background: Literature Review}
-\begin{displayquote}
-  Your brief restatement of the problem
-  that you have been asked to solve. Carry out a search of the literature to identify at least two
-  examples of journal papers that describe CA-based models relevant to this system. What features
-  did they model? What did they predict?
-  
-\end{displayquote}
-  
-  As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how is best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
+% \begin{displayquote}
+%   Your brief restatement of the problem
+%   that you have been asked to solve. Carry out a search of the literature to identify at least two
+%   examples of journal papers that describe CA-based models relevant to this system. What features
+%   did they model? What did they predict?
+% \end{displayquote}
+As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how is best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
 
-  Considering the evidence existing papers have used to justify their results can provide a good metric for the accuracy of our results. Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
 
-  There are two notable papers in this field whose outcomes seem to overlap strongly with our intentions. Both of these papers consider simulating real world forest fires using cellular automata. Using the deeper understanding of the problem space that the authors of these papers have will allow us to consider global properties which we may have been unaware.
+Considering the evidence existing papers have used to justify their results can provide a good metric for the accuracy of our results. Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
 
-  \subsection{Paper 1: A CA model for forest fire spread prediction}
+
+There are two notable papers in this field whose outcomes seem to overlap strongly with our intentions. Both of these papers consider simulating real world forest fires using cellular automata. Using the deeper understanding of the problem space that the authors of these papers have will allow us to consider global properties which we may have been unaware.
+
+  \subsection[Paper 1: A CA model for forest fire spread prediction]{ Paper 1: A CA model for forest fire spread prediction \cite{ALEXANDRIDIS2008191}}
   
     \subsubsection{Background}
  
@@ -80,6 +81,17 @@
       \item Spotting which is a phenomenon where burning material is transferred by the wind or other reasons such as the fling of flaming pinecones to areas that are not adjacent to the fire front.
     \end{itemize}
     
+    Each parameter is given a weighting and a probablistic model is used for each parameter to calculate the total chance of a cell being set on fire in the next time step ($t+1$).
+
+    The chance of fire, $p_{burn}$, is given as:
+
+    \[ p_{burn} = p_h(1+p_{veg})(1+p_{den})p_wp_s \]
+    where: \\
+    $p_h = $ constant probability that a cell adjacent to a burning cell containing a given type of vegetation and density will catch fire at the next time step under no wind and flat terrain \\
+    $p_{den}, p_{veg}, p_w, p_s$ = the density of vegetation, the type of vegetation, the wind speed and the slope, respectively.
+
+
+
   \subsubsection{Implementation}
   
   The CA has four necessary states:
@@ -94,6 +106,9 @@
   
   
   \subsubsection{Conclusion}
+  The use of additional parameters such as humidity to predict the spread of the forest fire, along with their use of real world GIS values gives rise to a greater accuracy of results (in relation to the real world spread of forest fires) when compared to the default criteria to be implemented.
+
+  To meet the criteria given, the insights regarding the weighting of different parameters and the use of a probabilistic model to calculate the chance of a cell burning offer a credible starting point.
 
   \subsection{Comparison between literature, insight and relevance to this implementation}
   The two papers discussed above implement the idea of 'fuel' in different ways. \cite{ALEXANDRIDIS2008191} structures fuel as a property of the states, whereas \textbf{Jacob's Paper} provides different states for different levels of fuel. 
@@ -114,6 +129,56 @@
   become experts in this area but you should at state justify any assumptions you make.
 \end{displayquote} 
 
+Cellular Automata is a term to describe the simulation of a discrete number of cells and interactions across a cell space (grid). Each cell can have one state at any one time step. Cells can change state. The permitted changes from any one state to another state is determined by a transition function. The transition function can consider global properties, such as the current time step, as well as local properties, such as the cell's current state, as well as its neighbourhood - a set of cells near the cell. 
+
+By representing small sections of the terrain as cells, cellular automata can be used to simulate the spread of the fire across the grid. By constructing the states of the CA to the functional states of the areas of terrain, transition functions which take additional parameters along with the cells can be used to map the flow of fire.
+
+After consulting existing literature, the following functional states were devised:
+
+\begin{enumerate}
+  \setcounter{enumi}{-1}
+  \item Burnt out
+  \item Burnable
+  \item On fire
+  \item Not burnable
+\end{enumerate}
+
+
+\begin{figure}[h]
+  \centering
+    \begin{tabular}{ || l | l ||}
+      \hline
+      \textbf{State}            &  \textbf{Valid transition states}  \\ 
+      \hline
+      Burnt Out        &  Burnt out           \\       
+      Burnable         &  Burnable, On fire   \\
+      On fire          &  On fire, Burnt out  \\   
+      Not burnable     &  Not burnable        \\
+      \hline
+ 
+    \end{tabular}
+  \caption{Valid state transitions for each of the states in the CA.}
+  \label{Valid state transitions}
+\end{figure}
+
+
+The transitions between states are calculated with a set of parameters for each cell, which are stored in an $5$-parameter list for each cell in a grid equal in width and height to the cell grid. 
+
+\begin{enumerate}
+  \setcounter{enumi}{-1}
+  \item Height - Scalar value
+  \item Wind/Magnitude - East to West
+  \item Flammability
+  \item Humidity
+  \item Fuel
+\end{enumerate}
+
+
+
+Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step.
+
+
+
 \begin{itemize}
   \item Change in height
 \end{itemize}
@@ -131,7 +196,7 @@ text. Additional results can be included in an appendix
 \end{displayquote}
 
 \newpage
-\section{Discussion of model and Conclusions} 
+\section{Discussion of model and conclusions} 
 \section{Conclusion}
 
 \newpage
