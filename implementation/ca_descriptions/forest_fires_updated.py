@@ -16,25 +16,30 @@ import numpy as np
 import capyle.utils as utils
 from capyle.ca import Grid2D, Neighbourhood, randomise2d
 
+# np.set_printoptions(threshold=sys.maxsize)
+
+
 def setup(args):
     """Set up the config object used to interact with the GUI"""
     config_path = args[0]
     config = utils.load(config_path)
     # -- THE CA MUST BE RELOADED IN THE GUI IF ANY OF THE BELOW ARE CHANGED --
-    config.title = "Forest Fires"
+    config.title = "Forest Fires Updated"
     config.dimensions = 2
     config.wrap = False
 
     # 0 = BURNT OUT
-    # 1 = BURNABLE
-    # 2 = ON FIRE
-    # 3 = NOT BURNABLE
-    config.states = (0, 1, 2, 3)
+    # 1 = DEFAULT, BURNABLE GRASS
+    # 2 = DENSE FOREST
+    # 3 = ON FIRE
+    # 4 = BUILDINGS
+    # 5 = WATER
+    config.states = (0, 1, 2, 3, 4, 5)
     # -------------------------------------------------------------------------
 
     # ---- Override the defaults below (these may be changed at anytime) ----
 
-    config.state_colors = [(0.1, 0.1, 0.1), (0, 1, 0), (1, 0, 0), (0, 0, 1)]
+    config.state_colors = [(0.1, 0.1, 0.1), (0, 1, 0), (0, 0.5, 0), (1, 0, 0), (0.5, 0.5, 0.5), (0, 0, 1) ]
 
     # ----------------------------------------------------------------------
 
@@ -122,29 +127,62 @@ def scale(arr, min_, max_):
                                     arr.max()), (min_, max_))
 
 def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
-    prob = scale(on_fire_neighbours, 0.01,2)*(wind + height)
-    normalised_prob = scale(prob, -0.5,1)
+    print(np.average(height))
+    wind_prob = scale(wind, 0,0.5)
+    height_prob = scale(height,0, 0.5)
+    print("on_fire_neighbours")
+    print(on_fire_neighbours)
+    prob = on_fire_neighbours*(wind_prob + height_prob + rate_of_flam)
+    normalised_prob = scale(prob, 0,1)
+    print("normalised_prob")
     print(normalised_prob)
-    return (normalised_prob > 0).astype(int)+1
+    return normalised_prob > 0.5
+
+# def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
+
+#     wind_prob = np.interp(wind, (wind.min(), wind.max()), (0, 0.5))
+#     height_prob = np.interp(height, (height.min(), height.max()), (0, 0.5))
+
+#     prob = on_fire_neighbours*(wind_prob + height_prob + rate_of_flam)
+#     normalised_prob = np.interp(prob, (prob.min(), prob.max()), (0, 1))
+
+#     return (normalised_prob > 0.5).astype(int)+1
+
 
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     """Function to apply the transition rules
     and return the new grid"""
 
-    fireable = grid == 1
+    fireable = (grid == 1) | (grid == 2) 
+    print("fireable.shape")
+    print(fireable.shape)
+    on_fire = grid == 3
 
     cells_grid_attribs_fireable = grid_attribs[fireable]
 
     # neighbours_of_onfire_cells = neighbourcounts[fireable]
     # neighbours_of_onfire_cells[2]
     # grid = ignites(grid, grid_attribs, neighbourstates.T)
-    grid[fireable] = ignite(cells_grid_attribs_fireable[:, 0],
-                            cells_grid_attribs_fireable[:, 1],
-                            cells_grid_attribs_fireable[:, 2],
-                            cells_grid_attribs_fireable[:, 3],
-                            cells_grid_attribs_fireable[:, 4],
-                            neighbourcounts[2][fireable]) if grid[fireable].size > 0 else grid[fireable]
+    should_be_on_fire = np.array([])
+    if cells_grid_attribs_fireable[:, 0].shape[0] > 0:
+        should_be_on_fire = ignite(cells_grid_attribs_fireable[:, 0],
+                                cells_grid_attribs_fireable[:, 1],
+                                cells_grid_attribs_fireable[:, 2],
+                                cells_grid_attribs_fireable[:, 3],
+                                cells_grid_attribs_fireable[:, 4],
+                                neighbourcounts[3][fireable])
+
+        print("should_be_on_fire.shape")
+        print(should_be_on_fire.shape)
+        # print(grid[fireable]    )
+        # grid[fireable] = 3  
+        fire_cells = grid[fireable]
+        fire_cells[should_be_on_fire] = 3
+        grid[fireable] = fire_cells
+    # fireable_and_should_be_on_fire = fireable & should_be_on_fire
+    # grid[fireable] = 
+    # print(grid[fireable][should_be_on_fire].shape)
     # print("res.shape")
     # print(res.shape)
 
@@ -157,7 +195,6 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     # cells_at_fire_risk = neighbour_on_fire & fireable
     # grid[cells_at_fire_risk] = 2
 
-    on_fire = grid == 2
 
     cells_grid_attribs_on_fire = grid_attribs[on_fire]
 
@@ -178,18 +215,37 @@ def main():
     # Get the config object from set up
     config = setup(sys.argv[1:])
 
-    grid_attribs = np.zeros((*config.grid_dims, 5))
 
+    # 0 = BURNT OUT
+    # 1 = DEFAULT, BURNABLE GRASS
+    # 2 = DENSE FOREST
+    # 3 = ON FIRE
+    # 4 = BUILDINGS
+    # 5 = WATER
+
+    grid_attribs = np.zeros((*config.grid_dims, 5))
     config.initial_grid = np.ones( config.grid_dims)
+    size_y , size_x = config.initial_grid.shape
+    #Pond
+    config.initial_grid[ int( 0.2*size_y ) : int( 0.3*size_y), int(0.1*size_x):int(0.3*size_x)] = 5
+    
+    #Fire
+    config.initial_grid[ 0, size_x-1] = 3
+    
+    #Town
+    config.initial_grid[ int(0.99*size_y) : 0, 0: int(0.05*size_x)] = 4
+
+    #Dense Forest
+
 
     # 0: Height - Scalar value
     # 1: Wind/Magnitude - East to West
     # 2: Flammability
     # 3: Humidity?
     # 4: Fuel
-    grid_attribs[...] = (1, 0.1, 0.1, 0, 1)
-    grid_attribs[:,:,0 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
-    # grid_attribs[:,:,1 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
+    grid_attribs[...] = (0.5, 1, 0.1, 0, 1)
+    # grid_attribs[:,:,0 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
+    grid_attribs[:,:,1 ] = np.random.randint(0, 5, size=grid_attribs[:, 0].shape[0])
     # print(winds.shape)
      
 
