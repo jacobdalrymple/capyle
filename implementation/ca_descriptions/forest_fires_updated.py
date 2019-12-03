@@ -27,7 +27,7 @@ def setup(args):
     config.title = "Forest Fires Updated"
     config.dimensions = 2
     config.wrap = False
-    config.num_generations = 500
+    config.num_generations = 100
     # 0 = BURNT OUT
     # 1 = DEFAULT, BURNABLE GRASS
     # 2 = DENSE FOREST
@@ -52,71 +52,7 @@ def setup(args):
         sys.exit()
     return config
 
-
-near_translations = [[0, 1], [-1, 0], [0, -1], [1, 0]]
-far_translations = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
-
-
-def within_bounds(col, row): return col < 100 and row < 100
-
-
-def neighbours_on_fire(row, col, neighbours):
-
-    NW, N, NE, W, E, SW, S, SE = neighbours
-    fire_close = list()
-    fire_far = list()
-
-    if (N == 2):
-        fire_close.append((row+1, col))
-    if (E == 2):
-        fire_close.append((row, col+1))
-    if (W == 2):
-        fire_close.append((row, col-1))
-    if (S == 2):
-        fire_close.append((row-1, col))
-
-    if (NW == 2):
-        fire_far.append((row+1, col-1))
-    if (NE == 2):
-        fire_far.append((row+1, col+1))
-    if (SW == 2):
-        fire_far.append((row-1, col-1))
-    if (SE == 2):
-        fire_far.append((row-1, col+1))
-
-    return fire_close, fire_far
-
-# Compute fireability for the grid
-
-
-def ignites(cell_states, cells_attribs, neighbours):
-
-    for row in range(len(cell_states)):
-        for col in range(len(cell_states[:])):
-
-            ignition_prob = 0
-
-            fire_close, fire_far = neighbours_on_fire(
-                row, col, neighbours[row][col])
-
-            if len(fire_close) >= 1:
-                for row1, col1 in fire_close:
-                    rate_of_flam = cells_attribs[row1-1, col1-1, 2]
-                    ignition_prob += 0.5 * rate_of_flam
-
-            if len(fire_far) >= 1:
-                for row2, col2 in fire_far:
-                    rate_of_flam = cells_attribs[row2-1, col2-1, 2]
-                    ignition_prob += 0.25 * rate_of_flam
-
-            if ignition_prob > 0.6:
-                cell_states[row][col] = 2
-
-    return cell_states
-
 # Vectorised function to reduce fuel based on 5 property arrays given
-
-
 def reduce_fuel(height, wind_x, wind_y, rate_of_flam, humidity, fuel):
     # with_spare_fuel = (fuel - rate_of_flam) >= 0
     # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
@@ -126,21 +62,36 @@ def reduce_fuel(height, wind_x, wind_y, rate_of_flam, humidity, fuel):
 def scale(arr, min_, max_):
     return np.interp(arr, (arr.min(),
                                     arr.max()), (min_, max_))
+    
+def cal_wind_weight(wind_x, wind_y, neighbour_states):
 
-def ignite(height, wind_x, wind_y, rate_of_flam, humidity, fuel, on_fire_neighbours):
-    print(np.average(height))
-    # wind_prob = scale(wind, 0,0.5)
-    # height_prob = scale(height,0, 0.5)
-    print("on_fire_neighbours")
-    print(on_fire_neighbours)
+    wind_weight = np.linspace(1, 1, wind_x.shape[0])
 
-    # prob = rate_of_flam*on_fire_neighbours*( (1*wind_x) + (1*wind_y) )
-    prob = (on_fire_neighbours >= 1).astype(int)*rate_of_flam
-    #normalised_prob = scale(prob, 0,1)
-    #print("normalised_prob")
-    #print(normalised_prob)
+    NW, N, NE, W, E, SW, S, SE = neighbour_states
+
+    #eastward_fire = (neighbour_states[:,4] == 4) #| (neighbour_states[:,2] == 4) | (neighbour_states[:,7] == 4)
+    ##westward_fire = (neighbour_states[:,0] == 4) | (neighbour_states[:,3] == 4) | (neighbour_states[:,5] == 4)
+    #x_wind = wind_x == -1
+    #east = eastward_fire & x_wind
+    #west = westward_fire & x_wind
+    wind_weight[E==4] = 5
+    wind_weight[W==4] = 0.1
+
+    return wind_weight
+
+
+def ignite(height, wind_x, wind_y, rate_of_flam, humidity, fuel, on_fire_neighbours, neighbour_states):
+    
+    on_fire_neighbours[on_fire_neighbours == 1] = 0.2
+    on_fire_neighbours[on_fire_neighbours == 2] = 0.5 
+    on_fire_neighbours[on_fire_neighbours > 4] = 1  
+
+    wind_weight = cal_wind_weight(wind_x, wind_y, neighbour_states)
+
+    prob = on_fire_neighbours*(rate_of_flam*np.random.rand(height.shape[0])*wind_weight)#*wind_x*wind_y
+    
     min_flam = np.min(rate_of_flam)
-    return prob >= min_flam
+    return prob > 0.2#(0.25)#*4)
 
 # def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
 
@@ -159,8 +110,8 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     and return the new grid"""
 
     fireable = (grid == 1) | (grid == 2) | (grid == 3)
-    print("fireable.shape")
-    print(fireable.shape)
+    #print("fireable.shape")
+    #print(fireable.shape)
     on_fire = grid == 4
 
     cells_grid_attribs_fireable = grid_attribs[fireable]
@@ -175,10 +126,11 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
                                 cells_grid_attribs_fireable[:, 3],
                                 cells_grid_attribs_fireable[:, 4],
                                 cells_grid_attribs_fireable[:, 5],
-                                neighbourcounts[4][fireable])
+                                neighbourcounts[4][fireable],
+                                neighbourstates[:,fireable])
 
-        print("should_be_on_fire.shape")
-        print(should_be_on_fire.shape)
+        #print("should_be_on_fire.shape")
+        #print(should_be_on_fire.shape)
         # print(grid[fireable]    )
         # grid[fireable] = 3  
         fire_cells = grid[fireable]
@@ -239,12 +191,10 @@ def main():
     # 3: Flammability
     # 4: Humidity?
     # 5: Fuel
-    grid_attribs[...] = (0, 1, 1, 0.3, 0, 2)
+    grid_attribs[...] = (0, -1, -1, 0.3, 0, 2)
     # grid_attribs[:,:,0 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
     # grid_attribs[:,:,1 ] = np.random.randint(0, 5, size=grid_attribs[:, 0].shape[0])
     # print(winds.shape)
-    grid_attribs[:, :, 1] = np.linspace(0, 1000, grid_attribs[:, 0].shape[0])
-    grid_attribs[:,:,2]  = np.linspace(0,1000, grid_attribs[:,0].shape[0])
 
     config.initial_grid = np.ones( config.grid_dims)
     size_y , size_x = config.initial_grid.shape
@@ -252,18 +202,24 @@ def main():
     config.initial_grid[ int( 0.2*size_y ) : int( 0.3*size_y), int(0.1*size_x):int(0.3*size_x)] = 6
     
     #Fire
-    config.initial_grid[ 0, size_x-1] = 4
+    config.initial_grid[ 0, size_x-101] = 4
+    config.initial_grid[ 0, size_x-102] = 4
+    config.initial_grid[ 1, size_x-102] = 4
+    config.initial_grid[ 1, size_x-103] = 4
     
     #Town
     config.initial_grid[ int(0.95*size_y) : size_y-1, 0: int(0.05*size_x)] = 5
 
     #Dense Forest
     config.initial_grid[ int( 0.6*size_y ) : int( 0.81*size_y), int(0.3*size_x): int(0.5*size_x)] = 2
-    grid_attribs[ int( 0.6*size_y ) : int( 0.81*size_y), int(0.3*size_x): int(0.5*size_x) ] = ( 0, 1, 0.1, 0.1, 0, 3)
+    grid_attribs[ int( 0.6*size_y ) : int( 0.81*size_y), int(0.3*size_x): int(0.5*size_x) ] = ( 0, 1, 0.1, 0.075, 0, 3)
 
     #Scrubland
     config.initial_grid[ int( 0.1*size_y ) : int( 0.7*size_y), int(0.65*size_x): int(0.7*size_x)] = 3
-    grid_attribs[int( 0.1*size_y ) : int( 0.7*size_y), int(0.65*size_x): int(0.7*size_x)] = (-1, 0.1, 1, 0.6, 0, 1)
+    grid_attribs[int( 0.1*size_y ) : int( 0.7*size_y), int(0.65*size_x): int(0.7*size_x)] = (-1, 0.1, 1, 3, 0, 1)
+
+    #grid_attribs[:, :, 1] = np.linspace(0.5, 0.5, grid_attribs[:, 0].shape[0])
+    #grid_attribs[:,:,2]  = np.linspace(4,4, grid_attribs[:,0].shape[0])
 
 
     # Create grid object using parameters from config + transition function
