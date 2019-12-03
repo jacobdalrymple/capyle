@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex report"] 1574761495 "report.aux" "report.bbl" "report" 1574762397
+["bibtex report"] 1575381735 "report.aux" "report.bbl" "report" 1575382507
   "/usr/local/texlive/2019/texmf-dist/bibtex/bst/apacite/apacite.bst" 1374530685 141073 9d7b79dbf9d91133318126032cff8c27 ""
   "Bibliography.bib" 1574340442 1612 447e77a1a4aafe47d8ef44662fe4db37 ""
-  "report.aux" 1574762396 3086 3739aafa4e9f941f3b3fe5c3f95b439a "xelatex"
+  "report.aux" 1575382506 3117 eb573ee8aa10ab09c09161fac9855ebf "xelatex"
   (generated)
-  "report.bbl"
   "report.blg"
-["xdvipdfmx"] 1574762397 "report.xdv" "report.pdf" "report" 1574762397
-  "report.xdv" 1574762396 89692 6bf507db5d5eca15cbc2adc4feb7aec4 "xelatex"
+  "report.bbl"
+["xdvipdfmx"] 1575382506 "report.xdv" "report.pdf" "report" 1575382507
+  "report.xdv" 1575382506 100552 6a66db378f80131ce73fdc0f91501633 "xelatex"
   (generated)
   "report.pdf"
-["xelatex"] 1574762394 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1574762397
-  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1574762393 11121 1471a16b5fafe170752202012e819268 ""
+["xelatex"] 1575382505 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1575382507
+  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1575382505 12224 9133d4e3aea8b7ccf3766c096ea405c0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -75,12 +75,12 @@
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1566248362 39543 a0bd1f17d0daea30a3905c0b020d0959 ""
   "/usr/local/texlive/2019/texmf-var/web2c/xetex/xelatex.fmt" 1569762900 3752885 bad9a154b0ec678c33c3bcdcabf57798 ""
   "/usr/local/texlive/2019/texmf.cnf" 1569762769 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "report.aux" 1574762396 3086 3739aafa4e9f941f3b3fe5c3f95b439a "xelatex"
-  "report.bbl" 1574761495 1114 c36034713b6643511a39742170375635 "bibtex report"
-  "report.out" 1574762396 1003 bb5b6bd8f65cb0ba361335041a1eab10 "xelatex"
-  "report.tex" 1574762393 11121 1471a16b5fafe170752202012e819268 ""
+  "report.aux" 1575382506 3117 eb573ee8aa10ab09c09161fac9855ebf "xelatex"
+  "report.bbl" 1575381736 1114 c36034713b6643511a39742170375635 "bibtex report"
+  "report.out" 1575382506 1003 bb5b6bd8f65cb0ba361335041a1eab10 "xelatex"
+  "report.tex" 1575382505 12224 9133d4e3aea8b7ccf3766c096ea405c0 ""
   (generated)
-  "report.out"
   "report.log"
-  "report.aux"
   "report.xdv"
+  "report.out"
+  "report.aux"

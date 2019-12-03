@@ -47,6 +47,11 @@
 \begin{displayquote}
   A brief summary of what you did and what you found.
 \end{displayquote}
+By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given to us.
+
+By using a reduced state set and cell properties, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step. 
+
+Attempting to relate our simulation to the real world values of forest fires across a similar terrain, we have gradually improved the weighting of various factors to generate a suitable fire spread.
 
 \section{Introduction and Background: Literature Review}
 % \begin{displayquote}
@@ -55,7 +60,7 @@
 %   examples of journal papers that describe CA-based models relevant to this system. What features
 %   did they model? What did they predict?
 % \end{displayquote}
-As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how is best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
+As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
 
 
 Considering the evidence existing papers have used to justify their results can provide a good metric for the accuracy of our results. Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
@@ -103,6 +108,8 @@ There are two notable papers in this field whose outcomes seem to overlap strong
   $State = 3$: The cell contains forest fuel that is burning.
   
   $State = 4$: The cell contained forest fuel that has been burned down.
+
+  
   
   
   \subsubsection{Conclusion}
@@ -138,9 +145,12 @@ After consulting existing literature, the following functional states were devis
 \begin{enumerate}
   \setcounter{enumi}{-1}
   \item Burnt out
-  \item Burnable
+  \item Burnable grass
+  \item Dense Forest
+  \item High Flammable Scrub
   \item On fire
-  \item Not burnable
+  \item Buildings
+  \item Water
 \end{enumerate}
 
 
@@ -151,9 +161,10 @@ After consulting existing literature, the following functional states were devis
       \textbf{State}            &  \textbf{Valid transition states}  \\ 
       \hline
       Burnt Out        &  Burnt out           \\       
-      Burnable         &  Burnable, On fire   \\
+      Burnable grass         &  Burnable grass, On fire   \\
       On fire          &  On fire, Burnt out  \\   
-      Not burnable     &  Not burnable        \\
+      Buildings          &  Buildings, On fire  \\   
+      Water     &  Water        \\
       \hline
  
     \end{tabular}
@@ -168,6 +179,7 @@ The transitions between states are calculated with a set of parameters for each 
   \setcounter{enumi}{-1}
   \item Height - Scalar value
   \item Wind/Magnitude - East to West
+  \item Wind/Magnitude - North to South
   \item Flammability
   \item Humidity
   \item Fuel
@@ -175,16 +187,12 @@ The transitions between states are calculated with a set of parameters for each 
 
 
 
-Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step.
+Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step. This is consistent with the method of \cite{ALEXANDRIDIS2008191}.
 
 
+If at least one cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the using a weighted sum of probabilities, dependent on the wind magnitude, the flammability of the cell that is on fire, and the difference in height compared to the neighbourhood.
 
-\begin{itemize}
-  \item Change in height
-\end{itemize}
-If a cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the sum of the weighted sums of the differences in height, the difference in wind magnitude, and the flammability of the cell that is on fire. The probability is then summed for every on fire cell in the neighbourhood.
-
-\[ F = \sum_{ [H, W, F] \in neighbourhood  } w_1 \Delta H + w_2 \Delta W + w_3 F  \]
+This can be represented as the following equation:
 
 \section{Results}
 \begin{displayquote}
@@ -195,6 +203,15 @@ where appropriate, line graphs) to display your results and you should also desc
 text. Additional results can be included in an appendix
 \end{displayquote}
 
+\begin{itemize}
+  \item Wind Direction - East to West
+  \item Wind Direction - North to South
+  \item Wind Direction - North East
+  \item Wind Direction - South West
+  \item Resolution     -  50 x  50
+  \item Resolution     - 200 x 200
+  \item Resolution     - 400 x 400
+\end{itemize}
 \newpage
 \section{Discussion of model and conclusions} 
 \section{Conclusion}
