@@ -29,7 +29,7 @@ def setup(args):
     config.title = "Forest Fires Updated"
     config.dimensions = 2
     config.wrap = False
-    config.num_generations = 200
+    config.num_generations = 500
     # 0 = BURNT OUT
     # 1 = DEFAULT, BURNABLE GRASS
     # 2 = DENSE FOREST
@@ -76,16 +76,31 @@ def cal_wind_weight(wind_spread, neighbour_states):
 
     return wind_weight
 
+def cal_height_weight(height, height_neighbours, neighbour_states):
 
-def ignite(height, rate_of_flam, humidity, fuel, wind_spread, on_fire_neighbours, neighbour_states):
+    height_weight = np.linspace(1, 1, height_neighbours.shape[0])
+
+    for i in range(neighbour_states.shape[0]):
+        index = neighbour_states[i] == 4
+        height_diff = height[index] - height_neighbours[index,i]
+        #height_angle = np.arctan(height_diff/5000)
+        #weight = np.exp(0.078 * height_angle[height_angle != 0])
+        #height_weight[index][height_angle != 0] += weight
+        height_weight[index] += 0.0051 * height_diff
+
+    return height_weight
+
+
+def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours, on_fire_neighbours, neighbour_states):
 
     wind_weight = cal_wind_weight(wind_spread, neighbour_states)
-    #height_weight = cal_height_weight(height, neighbour_states)
+    height_weight = cal_height_weight(height, height_neighbours, neighbour_states)
 
-    prob = 0.5 * (on_fire_neighbours > 0).astype(int) * (1+rate_of_flam) * wind_weight * np.random.rand(height.shape[0])#*height_weight)#*wind_x*wind_y* (1 + np.random.rand(height.shape[0]))
-    print(prob)
-    min_prob = np.min(prob)
-    return prob > 0.4#(0.25)#*4)
+    prob = 0.5 * (on_fire_neighbours > 0).astype(int) * (1 + rate_of_flam) * wind_weight * height_weight * np.random.rand(height.shape[0])
+
+    random = np.random.rand(prob.shape[0])
+
+    return random < prob
 
 
 # Vectorised function to reduce fuel based on 5 property arrays given
@@ -105,7 +120,8 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
                                 cells_grid_attribs_fireable[:, 1],
                                 cells_grid_attribs_fireable[:, 2],
                                 cells_grid_attribs_fireable[:, 3],
-                                cells_grid_attribs_fireable[:, 4:],
+                                cells_grid_attribs_fireable[:, 4:12],
+                                cells_grid_attribs_fireable[:,12:],
                                 neighbourcounts[4][fireable],
                                 neighbourstates[:,fireable])
 
@@ -115,8 +131,8 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
 
     cells_grid_attribs_on_fire = grid_attribs[on_fire]
 
-    grid_attribs[on_fire,3] = reduce_fuel(cells_grid_attribs_on_fire[:, 1],
-                                        cells_grid_attribs_on_fire[:, 3])
+    cells_grid_attribs_on_fire[:,3] -= cells_grid_attribs_on_fire[:,1]
+    grid_attribs[on_fire] = cells_grid_attribs_on_fire
 
     burnt_out = grid_attribs[:, :, 5] == 0
     grid[burnt_out] = 0
@@ -138,9 +154,9 @@ def cal_wind_spread_vectors(wind_x, wind_y):
 def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
-    wind_x = 6
-    wind_y = 6
-    grid_attribs = np.zeros((*config.grid_dims, 12))
+    wind_x = -6
+    wind_y = -10
+    grid_attribs = np.zeros((*config.grid_dims, 20))
 
     # 0: Height - Scalar value
     # 1: Flammability
@@ -150,8 +166,8 @@ def main():
     grid_attribs[:,:,0] = 0
     grid_attribs[:,:,1] = 0.3
     grid_attribs[:,:,2] = 0
-    grid_attribs[:,:,3] = 2
-    grid_attribs[:,:,4:] = cal_wind_spread_vectors(wind_x, wind_y)
+    grid_attribs[:,:,3] = 20
+    grid_attribs[:,:,4:12] = cal_wind_spread_vectors(wind_x, wind_y)
     
 
     config.initial_grid = np.ones( config.grid_dims)
@@ -175,19 +191,45 @@ def main():
     d_forest_x_coords = [int(0.3*size_x), int(0.5*size_x)]
     d_forest_y_coords = [int( 0.6*size_y ), int( 0.81*size_y)]
     config.initial_grid[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1]] = 2
-    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 0] = 0
-    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 1] = 0.1
-    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 2] = 0
-    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 3] = 3
+    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 1] = -0.7
+    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 3] = 30
 
     #Scrubland
     scrubland_x_coords = [int(0.65*size_x), int(0.7*size_x)]
     scrubland_y_coords = [int( 0.1*size_y ), int( 0.7*size_y)]
     config.initial_grid[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1]] = 3
-    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = 0
-    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 1] = 0.9
-    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 2] = 0
-    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 3] = 1
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 1] = 1.5
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 3] = 10
+
+    #top slope of cayon
+    grid_attribs[scrubland_y_coords[0] + 5 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -1
+    grid_attribs[scrubland_y_coords[0] + 4 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -125.75
+    grid_attribs[scrubland_y_coords[0] + 3 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -250.5
+    grid_attribs[scrubland_y_coords[0] + 2 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -375.25
+    grid_attribs[scrubland_y_coords[0] + 1 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
+    #bottom slope of cayon
+    grid_attribs[scrubland_y_coords[1] - 1 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -1
+    grid_attribs[scrubland_y_coords[1] - 2 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -125.75
+    grid_attribs[scrubland_y_coords[1] - 3 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -250.5
+    grid_attribs[scrubland_y_coords[1] - 4 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -375.25
+    grid_attribs[scrubland_y_coords[1] - 5 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
+    #sides of cayon
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
+
+    transitions = [[1,1], [0,1], [-1,1], [1,0], [0,-1], [1,-1], [0,-1], [-1,-1]]
+    height_neighbours = np.zeros((*config.grid_dims, 8))
+
+    #grid_attribs[:,:,0] = 0
+
+    for i in range(grid_attribs.shape[0]):
+        for j in range(grid_attribs.shape[1]):
+            for k in range(len(transitions)):
+                x_coord = j - transitions[k][0]
+                y_coord = i - transitions[k][1]
+                if (0 <= x_coord < 200) and (0 <= y_coord < 200):
+                    height_neighbours[i][j][k] = grid_attribs[y_coord, x_coord, 0]
+
+    grid_attribs[:,:,12:] = height_neighbours
 
     # Create grid object using parameters from config + transition function
     grid = Grid2D(config, (transition_function, grid_attribs))
