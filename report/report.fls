@@ -77,6 +77,12 @@ INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/appendix/appendix.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/appendix/appendix.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/xcolor/xcolor.sty
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/xcolor/xcolor.sty
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/xetex.def
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/xetex.def
 INPUT report.aux
 INPUT report.aux
 OUTPUT report.aux
@@ -88,8 +94,6 @@ INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
-INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/xetex.def
-INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/xetex.def
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty

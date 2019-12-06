@@ -14,6 +14,11 @@
 \usepackage[parfill]{parskip}
 
 \geometry{lmargin=37mm, rmargin=25mm} 
+
+% Better inline directory listings
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
  
 % \hypersetup{pdftitle = Applications of Cellular Automata: Wildfire Spread simulation, pdfauthor = {Thomas Barratt, Jacob Dalrymple}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode=FullScreen, colorlinks, anchorcolor = red, citecolor = blue, urlcolor=blue, filecolor=green, linkcolor=red, plainpages=false}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,9 +54,9 @@
 \end{displayquote}
 By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given to us.
 
-By using a reduced state set and cell properties, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step. 
+By using a minimal state set and an auxiliary 20-parameter cell property grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
 
-Attempting to relate our simulation to the real world values of forest fires across a similar terrain, we have gradually improved the weighting of various factors to generate a suitable fire spread.
+Attempting to relate our simulation to the real world values of forest fires across a similar terrain, we have gradually improved the weighting of various factors to generate a suitable fire spread. 
 
 \section{Introduction and Background: Literature Review}
 % \begin{displayquote}
@@ -60,65 +65,67 @@ Attempting to relate our simulation to the real world values of forest fires acr
 %   examples of journal papers that describe CA-based models relevant to this system. What features
 %   did they model? What did they predict?
 % \end{displayquote}
-As the issue of simulating the spread of the wildfire is to be implemented through cellular automata, consulting existing research into this field can give us a valuable insight into how best to proceed. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area.
+Consulting existing research into the field of cellular automata can give us a valuable insight into how best to proceed when considering the formulation of a model which can describe the spread of wildfire. Considering what properties are being modelled and the ways in which transitions between state are decided can give us a grounding in this specific problem area. Research into the real world applications of forest fires are fruitful and well explored: using CA to explore forest fires is something that is well researched [\cite{ntinas2017parallel}
+\cite{clarke1994cellular}
+\cite{trunfio2011new}].
+
+Considering the evidence existing papers have used to justify their results, including their empirical values formulated by authors familiar with the problem domain, can provide a good metric for the accuracy of our results. 
+
+% Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
+
+There are two notable papers in this field whose outcomes seem to overlap strongly with our intentions. Both of these papers consider simulating real world forest fires using cellular automata, but have different approaches to the use of neighbourhoods and states, and their relationship with the real world properties that affect forest fires.
 
 
-Considering the evidence existing papers have used to justify their results can provide a good metric for the accuracy of our results. Because this project seeks to show the effect of wildfires in relation to a municipality and surrounding area,the real world implications are obvious, and should be considered throughout our research into this domain.
+\cite{HERNANDEZENCINAS20071213} seeks to model forest fires using a hexagonal grid, modeling various different fuel values as states. By using a hexagonal model, the size of each cells' neighbourhood is increased - allowing more complex calculations to be derived on the basis of a `near neighbourhood' and `distant neighbourhood'.
+The authors of the paper opt to use 3 properties when considering the flammability rate of a cell: wind, topography, and the rate of fire speed. This simplistic model differs from that of \cite{ALEXANDRIDIS2008191}, which includes 
+spread and shape of a forest fire front; the fuel type (type of vegetation); humidity; wind direction and magnitude; terrain topography (slope and natural barriers), fuel continuity (vegetation thickness); and spotting - a phenomenon where burning material is transferred by the wind or other reasons such as the fling of flaming pinecones to areas that are not adjacent to the fire front.
 
+Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} allows an implementation with greater accuracy in relation to real forest fires, this is only true if the correct relationships and weightings are defined.
 
-There are two notable papers in this field whose outcomes seem to overlap strongly with our intentions. Both of these papers consider simulating real world forest fires using cellular automata. Using the deeper understanding of the problem space that the authors of these papers have will allow us to consider global properties which we may have been unaware.
+    % \begin{itemize}
+    %   \item Wind
+    %   \item Topography
+    %   \item Rate of fire spread
+    % \end{itemize}
 
-  \subsection[Paper 1: A CA model for forest fire spread prediction]{ Paper 1: A CA model for forest fire spread prediction \cite{ALEXANDRIDIS2008191}}
-  
-    \subsubsection{Background}
+  \cite{HERNANDEZENCINAS20071213} following states are defined in the paper: \\ $\left\{ 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1  \right\}$, where each value represents a fuel value. This differs from \cite{ALEXANDRIDIS2008191}, where four states were used ($ \left\{ 0, 1, 2,3 \right\}$), which represent differing functional states. This choice of state representation is based on the paper's approach to the functional implementation of what means to `be on fire'.
+
+ \cite{ALEXANDRIDIS2008191}'s model was designed to include the most impactful properties when considering the spread of wildfire. By comparing their results against that of the 1990 Spetses island wildfires, and iteratively changing constants in their transition functions, the authors simulated forest fire spread to a high degree of accuracy - their final results occupying $5.4km^2$, with the actual fire occupying $5.9km^2$.
+
+ To calculate the chance of a cell being `on fire', \cite{HERNANDEZENCINAS20071213} uses the following approach. Each parameter [listed above] is given a weighting and a probablistic model is used for each parameter to calculate the total chance of a cell being set on fire in the next time step ($t+1$).
+
+ The chance of fire, $p_{burn}$, is given as:
+
+ \[ p_{burn} = p_h(1+p_{veg})(1+p_{den})p_wp_s \]
+ where: \\
+ $p_h = $ constant probability that a cell adjacent to a burning cell containing a given type of vegetation and density will catch fire at the next time step under no wind and flat terrain \\
+ $p_{den}, p_{veg}, p_w, p_s$ = the density of vegetation, the type of vegetation, the wind speed and the slope, respectively.
+
+ In contrast, \cite{HERNANDEZENCINAS20071213} looked to find the optimal values in any forest fires, using purely mathematical models to generate suitable constants and boundaries.
+
+  % \cite{ALEXANDRIDIS2008191}  defines the following relationship between the neighborhood of a cell and its state: If all cells in the neighborhood of $O = (a, b)$ are unburned at time $t$ except only one adjacent cell, which is completely burned out, then at time $t + 1$, the cell $(a, b)$ is completely burned out.
  
-    This paper seeks to provide a comprehensive model for modelling wildfires using a cellular automata, designed to include the most impactful properties when considering the spread of wildfire. By comparing their results against that of the 1990 Spetses island wildfires, and iteratively changing constants in their transition functions, the authors simulated forest fire spread to a high degree of accuracy - their final results occupying $5.4km^2$, with the actual fire occupying $5.9km^2$.
-  
-    \subsubsection{Context}  
-    The authors states several key criteria which affect the spread of wildfire across a terrain.
-    \begin{itemize}
 
-      \item Spread and shape of a forest fire front
-      \item The fuel type (type of vegetation)
-      \item Humidity
-      \item Wind speed and direction
-      \item Forest topography (slope and natural barriers), fuel continuity (vegetation thickness)
-      \item Spotting which is a phenomenon where burning material is transferred by the wind or other reasons such as the fling of flaming pinecones to areas that are not adjacent to the fire front.
-    \end{itemize}
+  
+    % The authors states several key criteria which affect the spread of wildfire across a terrain.
     
-    Each parameter is given a weighting and a probablistic model is used for each parameter to calculate the total chance of a cell being set on fire in the next time step ($t+1$).
-
-    The chance of fire, $p_{burn}$, is given as:
-
-    \[ p_{burn} = p_h(1+p_{veg})(1+p_{den})p_wp_s \]
-    where: \\
-    $p_h = $ constant probability that a cell adjacent to a burning cell containing a given type of vegetation and density will catch fire at the next time step under no wind and flat terrain \\
-    $p_{den}, p_{veg}, p_w, p_s$ = the density of vegetation, the type of vegetation, the wind speed and the slope, respectively.
-
-
-
-  \subsubsection{Implementation}
-  
-  The CA has four necessary states:
-  
-  $State = 1$: The cell contains no forest fuel. This state may describe the cells corresponding to parts of the city with no vegetation, rural areas with no vegetation etc. We assume that cells that are in this state cannot be burned.
-  
-  $State = 2$: The cell contains forest fuel that has not ignited.
-  
-  $State = 3$: The cell contains forest fuel that is burning.
-  
-  $State = 4$: The cell contained forest fuel that has been burned down.
 
   
+  % The CA has four necessary states:
   
+  % $State = 1$: The cell contains no forest fuel. This state may describe the cells corresponding to parts of the city with no vegetation, rural areas with no vegetation etc. We assume that cells that are in this state cannot be burned.
   
-  \subsubsection{Conclusion}
+  % $State = 2$: The cell contains forest fuel that has not ignited.
+  
+  % $State = 3$: The cell contains forest fuel that is burning.
+  
+  % $State = 4$: The cell contained forest fuel that has been burned down.
+
   The use of additional parameters such as humidity to predict the spread of the forest fire, along with their use of real world GIS values gives rise to a greater accuracy of results (in relation to the real world spread of forest fires) when compared to the default criteria to be implemented.
 
   To meet the criteria given, the insights regarding the weighting of different parameters and the use of a probabilistic model to calculate the chance of a cell burning offer a credible starting point.
 
-  \subsection{Comparison between literature, insight and relevance to this implementation}
-  The two papers discussed above implement the idea of 'fuel' in different ways. \cite{ALEXANDRIDIS2008191} structures fuel as a property of the states, whereas \textbf{Jacob's Paper} provides different states for different levels of fuel. 
+  The two papers discussed above implement the idea of 'fuel' in different ways. \cite{ALEXANDRIDIS2008191} structures fuel as a property of the states, whereas \cite{HERNANDEZENCINAS20071213} provides different states for different levels of fuel. 
   
   The advantage of moving the fuel state into an attribute of the cell is the greater precision of fuel that can be stored, while also maintaining a smaller amount of states. By limiting fuel state to discrete variables, the forest fire spread will lose valuable resolution which can be maintained with a different data structure.
 
@@ -138,21 +145,22 @@ There are two notable papers in this field whose outcomes seem to overlap strong
 
 Cellular Automata is a term to describe the simulation of a discrete number of cells and interactions across a cell space (grid). Each cell can have one state at any one time step. Cells can change state. The permitted changes from any one state to another state is determined by a transition function. The transition function can consider global properties, such as the current time step, as well as local properties, such as the cell's current state, as well as its neighbourhood - a set of cells near the cell. 
 
-By representing small sections of the terrain as cells, cellular automata can be used to simulate the spread of the fire across the grid. By constructing the states of the CA to the functional states of the areas of terrain, transition functions which take additional parameters along with the cells can be used to map the flow of fire.
+By representing small sections of the terrain as cells, cellular automata can be used to simulate the spread of the fire across the grid. The amount of cells can be thought of as the resolution of the simulation. 
 
-After consulting existing literature, the following functional states were devised:
+After consulting existing literature, the following functional states were devised. 
 
 \begin{enumerate}
   \setcounter{enumi}{-1}
-  \item Burnt out
-  \item Burnable grass
-  \item Dense Forest
-  \item High Flammable Scrub
-  \item On fire
-  \item Buildings
-  \item Water
+  \item \textbf{Burnt out} - cells which were once on fire, but have no fuel remaining.
+  \item \textbf{Burnable grass} - the default state for the terrain, as listed by the specification
+  \item \textbf{Dense Forest} - Thick forest with more `fuel' than burnable grass, but which is harder to ignite.
+  \item \textbf{High Flammable Scrub} - A low fuel but highly flammable substance, found in the valley in the specification
+  \item \textbf{On fire} - cells which are on fire
+  \item \textbf{Buildings} - cells which are buildings, this represents the town on the map.
+  \item \textbf{Water} - a state which can never be on fire.
 \end{enumerate}
 
+Burnable grass, Dense Forest and High Flammable Shrub are all variations of a burnable substance, and although this could be managed entirely within the additional parameters for each cell, having dedicated states allows the representation of the differing areas with different colours with the CaPyle simulation engine \cite{capyle_home_2016}.
 
 \begin{figure}[h]
   \centering
@@ -173,26 +181,58 @@ After consulting existing literature, the following functional states were devis
 \end{figure}
 
 
-The transitions between states are calculated with a set of parameters for each cell, which are stored in an $5$-parameter list for each cell in a grid equal in width and height to the cell grid. 
+The transitions between states are calculated with a set of parameters for each cell, which are stored in an $20$-parameter list for each cell in a grid equal in width and height to the cell grid. 
 
-\begin{enumerate}
-  \setcounter{enumi}{-1}
-  \item Height - Scalar value
-  \item Wind/Magnitude - East to West
-  \item Wind/Magnitude - North to South
-  \item Flammability
-  \item Humidity
-  \item Fuel
-\end{enumerate}
+\begin{itemize}
+  \item [0] Height - Scalar value (m)
+  \item [1] Flammability
+  \item [2] Humidity
+  \item [3] Fuel
+  \item [4-12] Wind difference vectors (difference between wind in cell and neighbours) ($ms^{-1}$)
+  % \item 8 Wind vectors 
+  % \item 8 Height vectors  - assumption about heights
+  % \item Flammability
+  % \item Humidity
+  % \item Fuel
+\end{itemize}
 
+Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our transitions, our grid is computed at every interval using two main functions, \code{ignite} and \code{reduce\_fuel}.
 
+\subsection{Ignite}
+Height
+
+Pass windx, windy, scalars, create vector from both  (Constant across all cells - vector), calculate magnitude of vector.
+Five vectors calculated in neighbours N, NE, E....
+define angle array.
+Calculate difference in angle between the two.
+Supply wind vector and fire vector, calculate the angle difference, results in 8 different angle diffs, for each neighbour
+
+Uses formula to calculate the angular differences, and the wind vectors, using formula defined in \cite{ALEXANDRIDIS2008191}, we can plug in values:
+
+Weightings used in the paper.
+
+Result is wind weighting across all 8 different neighbours.
+
+Calculate wind weight, initially 0, (8,200,200), wind weight increased by number of neighbours on fire.
+
+Base probability 0.5, normal woodland could catch on fire even if no wind as long as one neighbour is on fire. 
 
 Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step. This is consistent with the method of \cite{ALEXANDRIDIS2008191}.
 
 
 If at least one cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the using a weighted sum of probabilities, dependent on the wind magnitude, the flammability of the cell that is on fire, and the difference in height compared to the neighbourhood.
 
+Generate random array, see if below it, schotachisticty.
+
+Assumption: rate of flammability is inversely proportional to the height difference.
+
+
+How long does a normal forest fire take to travel 5km, then divide by 2: that's our speed. 
+
+
 This can be represented as the following equation:
+\subsection{Reduce Fuel}
+
 
 \section{Results}
 \begin{displayquote}
@@ -202,16 +242,15 @@ how long the simulation was run for. You should use fully labelled diagrams (e.g
 where appropriate, line graphs) to display your results and you should also describe your results in
 text. Additional results can be included in an appendix
 \end{displayquote}
-
-\begin{itemize}
-  \item Wind Direction - East to West
-  \item Wind Direction - North to South
-  \item Wind Direction - North East
-  \item Wind Direction - South West
-  \item Resolution     -  50 x  50
-  \item Resolution     - 200 x 200
-  \item Resolution     - 400 x 400
-\end{itemize}
+  \subsection{Dense forest locations}
+  \subsection{Best water locations}
+  \subsection{Wind Direction - East to West}
+  \subsection{Wind Direction - North to South}
+  \subsection{Wind Direction - North East}
+  \subsection{Wind Direction - South West}
+  \subsection{Resolution     -  50 x  50}
+  \subsection{Resolution     - 200 x 200}
+  \subsection{Resolution     - 400 x 400}
 \newpage
 \section{Discussion of model and conclusions} 
 \section{Conclusion}

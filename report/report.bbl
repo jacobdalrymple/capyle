@@ -39,4 +39,151 @@ Alexandridis, A.%
   \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
+\bibitem [\protect \citeauthoryear {%
+\APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
+\APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
+{\protect \APACyear {2016}}%
+}]{%
+capyle_home_2016}
+\APACinsertmetastar {%
+capyle_home_2016}%
+\APACrefbtitle {CAPyLE | cross-platform teaching tool.} {Capyle |
+  cross-platform teaching tool.}
+\newblock
+\APACrefYearMonthDay{2016}{May}{}.
+\newblock
+\APACaddressPublisher{}{University of Sheffield}.
+\newblock
+\begin{APACrefURL} \url{https://pjworsley.github.io/capyle/} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Clarke%
+, Brass%
+\BCBL {}\ \BBA {} Riggan%
+}{%
+Clarke%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1994}}%
+}]{%
+clarke1994cellular}
+\APACinsertmetastar {%
+clarke1994cellular}%
+\begin{APACrefauthors}%
+Clarke, K\BPBI C.%
+, Brass, J\BPBI A.%
+\BCBL {}\ \BBA {} Riggan, P\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1994}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A cellular automaton model of wildfire propagation and
+  extinction} {A cellular automaton model of wildfire propagation and
+  extinction}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Photogrammetric Engineering and Remote Sensing. 60
+  (11): 1355-1367}{60}{11}{1355--1367}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Encinas%
+, White%
+, del Rey%
+\BCBL {}\ \BBA {} Sánchez%
+}{%
+Encinas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2007}}%
+}]{%
+HERNANDEZENCINAS20071213}
+\APACinsertmetastar {%
+HERNANDEZENCINAS20071213}%
+\begin{APACrefauthors}%
+Encinas, L\BPBI H.%
+, White, S\BPBI H.%
+, del Rey, A\BPBI M.%
+\BCBL {}\ \BBA {} Sánchez, G\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2007}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Modelling forest fire spread using hexagonal cellular
+  automata} {Modelling forest fire spread using hexagonal cellular
+  automata}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Applied Mathematical Modelling}{31}{6}{1213 - 1227}.
+\newblock
+\begin{APACrefURL}
+  \url{http://www.sciencedirect.com/science/article/pii/S0307904X06000916}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{https://doi.org/10.1016/j.apm.2006.04.001}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ntinas%
+, Moutafis%
+, Trunfio%
+\BCBL {}\ \BBA {} Sirakoulis%
+}{%
+Ntinas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+ntinas2017parallel}
+\APACinsertmetastar {%
+ntinas2017parallel}%
+\begin{APACrefauthors}%
+Ntinas, V\BPBI G.%
+, Moutafis, B\BPBI E.%
+, Trunfio, G\BPBI A.%
+\BCBL {}\ \BBA {} Sirakoulis, G\BPBI C.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Parallel fuzzy cellular automata for data-driven
+  simulation of wildfire spreading} {Parallel fuzzy cellular automata for
+  data-driven simulation of wildfire spreading}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of computational science}{21}{}{469--485}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Trunfio%
+, D’Ambrosio%
+, Rongo%
+, Spataro%
+\BCBL {}\ \BBA {} Di~Gregorio%
+}{%
+Trunfio%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+trunfio2011new}
+\APACinsertmetastar {%
+trunfio2011new}%
+\begin{APACrefauthors}%
+Trunfio, G\BPBI A.%
+, D’Ambrosio, D.%
+, Rongo, R.%
+, Spataro, W.%
+\BCBL {}\ \BBA {} Di~Gregorio, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A new algorithm for simulating wildfire spread through
+  cellular automata} {A new algorithm for simulating wildfire spread through
+  cellular automata}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{ACM Transactions on Modeling and Computer Simulation
+  (TOMACS)}{22}{1}{6}.
+\PrintBackRefs{\CurrentBib}
+
 \end{thebibliography}
