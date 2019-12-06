@@ -96,7 +96,7 @@ def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours,
     wind_weight = cal_wind_weight(wind_spread, neighbour_states)
     height_weight = cal_height_weight(height, height_neighbours, neighbour_states)
 
-    prob = 0.5 * (on_fire_neighbours > 0).astype(int) * (1 + rate_of_flam) * wind_weight * height_weight * np.random.rand(height.shape[0])
+    prob = 0.5 * (on_fire_neighbours > 0).astype(int) * rate_of_flam * wind_weight * height_weight * np.random.rand(height.shape[0])
 
     random = np.random.rand(prob.shape[0])
 
@@ -104,8 +104,12 @@ def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours,
 
 
 # Vectorised function to reduce fuel based on 5 property arrays given
-def reduce_fuel(rate_of_flam, fuel):
-    return (fuel - rate_of_flam).clip(min=0)
+def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours):
+    # with_spare_fuel = (fuel - rate_of_flam) >= 0
+    # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
+    fuel = (fuel - rate_of_flam).clip(min=0)
+    return np.array([height, rate_of_flam, humidity, fuel, *wind_spread.T, *height_neighbours.T]).T
+
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     """Function to apply the transition rules
@@ -131,8 +135,12 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
 
     cells_grid_attribs_on_fire = grid_attribs[on_fire]
 
-    cells_grid_attribs_on_fire[:,3] -= cells_grid_attribs_on_fire[:,1]
-    grid_attribs[on_fire] = cells_grid_attribs_on_fire
+    grid_attribs[on_fire] = reduce_fuel(cells_grid_attribs_on_fire[:, 0],
+                                        cells_grid_attribs_on_fire[:, 1],
+                                        cells_grid_attribs_on_fire[:, 2],
+                                        cells_grid_attribs_on_fire[:, 3],
+                                        cells_grid_attribs_on_fire[:, 4:12],
+                                        cells_grid_attribs_on_fire[:, 12:],)
 
     burnt_out = grid_attribs[:, :, 5] == 0
     grid[burnt_out] = 0
@@ -154,8 +162,8 @@ def cal_wind_spread_vectors(wind_x, wind_y):
 def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
-    wind_x = -6
-    wind_y = -10
+    wind_x = 0.01
+    wind_y = 0.01
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
     # 0: Height - Scalar value
@@ -164,7 +172,7 @@ def main():
     # 3: Fuel
     # 4-12: wind_spread_weights
     grid_attribs[:,:,0] = 0
-    grid_attribs[:,:,1] = 0.3
+    grid_attribs[:,:,1] = 1
     grid_attribs[:,:,2] = 0
     grid_attribs[:,:,3] = 20
     grid_attribs[:,:,4:12] = cal_wind_spread_vectors(wind_x, wind_y)
@@ -178,9 +186,6 @@ def main():
 
     #Fire
     config.initial_grid[ 0, size_x-1] = 4
-    config.initial_grid[ 0, size_x-2] = 4
-    config.initial_grid[ 1, size_x-2] = 4
-    config.initial_grid[ 1, size_x-3] = 4
 
     #Town
     town_x_coords = [0, int(0.05*size_x)]
@@ -191,14 +196,14 @@ def main():
     d_forest_x_coords = [int(0.3*size_x), int(0.5*size_x)]
     d_forest_y_coords = [int( 0.6*size_y ), int( 0.81*size_y)]
     config.initial_grid[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1]] = 2
-    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 1] = -0.7
+    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 1] = 0.2
     grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 3] = 30
 
     #Scrubland
     scrubland_x_coords = [int(0.65*size_x), int(0.7*size_x)]
     scrubland_y_coords = [int( 0.1*size_y ), int( 0.7*size_y)]
     config.initial_grid[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1]] = 3
-    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 1] = 1.5
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 1] = 3
     grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 3] = 10
 
     #top slope of cayon
