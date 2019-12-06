@@ -48,13 +48,9 @@
 \section{Abstract}
 
 \section{Introduction}
-
-\begin{displayquote}
-  A brief summary of what you did and what you found.
-\end{displayquote}
 By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given to us.
 
-By using a minimal state set and an auxiliary 20-parameter cell property grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
+By using a minimal state set and an auxiliary 20-value cell attribute grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
 
 Attempting to relate our simulation to the real world values of forest fires across a similar terrain, we have gradually improved the weighting of various factors to generate a suitable fire spread. 
 
@@ -101,7 +97,11 @@ Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} al
  $p_h = $ constant probability that a cell adjacent to a burning cell containing a given type of vegetation and density will catch fire at the next time step under no wind and flat terrain \\
  $p_{den}, p_{veg}, p_w, p_s$ = the density of vegetation, the type of vegetation, the wind speed and the slope, respectively.
 
- In contrast, \cite{HERNANDEZENCINAS20071213} looked to find the optimal values in any forest fires, using purely mathematical models to generate suitable constants and boundaries.
+ In contrast, \cite{HERNANDEZENCINAS20071213} looked to find the optimal values in any forest fire, using purely mathematical models which consider heavily the boundary conditions of each of the hexagon cells in an inhomogeneous forest neighborhood.
+
+ This difference in approach, applied versus maximum mathematical, shows the effect of the fuzzy nature of real life. \cite{ALEXANDRIDIS2008191}, which looked towards a case study to generate its values, relied on empirical constants, whereas \cite{HERNANDEZENCINAS20071213} focused entirely on a formulaic approach.
+
+ When considering the use of CA in our study, the question of whether a case study based approach has to be answered. Due to the greater knowledge of the existing authors on the topic, ensuring the work presented here is the best position to build on their findings is essential.
 
   % \cite{ALEXANDRIDIS2008191}  defines the following relationship between the neighborhood of a cell and its state: If all cells in the neighborhood of $O = (a, b)$ are unburned at time $t$ except only one adjacent cell, which is completely burned out, then at time $t + 1$, the cell $(a, b)$ is completely burned out.
  
@@ -143,7 +143,7 @@ Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} al
   become experts in this area but you should at state justify any assumptions you make.
 \end{displayquote} 
 
-Cellular Automata is a term to describe the simulation of a discrete number of cells and interactions across a cell space (grid). Each cell can have one state at any one time step. Cells can change state. The permitted changes from any one state to another state is determined by a transition function. The transition function can consider global properties, such as the current time step, as well as local properties, such as the cell's current state, as well as its neighbourhood - a set of cells near the cell. 
+Cellular Automata is a term to describe the simulation of a discrete number of cells and interactions across a cell space (grid). Each cell can have one state at any one time step (generation). Cells can change state. The permitted changes from any one state to another state is determined by a transition function. The transition function can consider global properties, such as the current time step, as well as local properties, such as the cell's current state, as well as its neighbourhood - a set of cells near the cell. 
 
 By representing small sections of the terrain as cells, cellular automata can be used to simulate the spread of the fire across the grid. The amount of cells can be thought of as the resolution of the simulation. 
 
@@ -160,7 +160,9 @@ After consulting existing literature, the following functional states were devis
   \item \textbf{Water} - a state which can never be on fire.
 \end{enumerate}
 
-Burnable grass, Dense Forest and High Flammable Shrub are all variations of a burnable substance, and although this could be managed entirely within the additional parameters for each cell, having dedicated states allows the representation of the differing areas with different colours with the CaPyle simulation engine \cite{capyle_home_2016}.
+These states represent the same approach as that of \cite{ALEXANDRIDIS2008191}, where each state represents a functionally different cell. This state model is an extension of a binary state CA given as a starting point for this assignment. The migration away from a two state model was necessary to capture the detail provided in the specification and also to implement some of the core findings from existing literature.
+
+Burnable grass, Dense Forest and High Flammable Shrub are all variations of a burnable substance, and although this could be managed entirely within the attribute grid for each cell, having dedicated states allows the representation of the differing areas with different colours with the CaPyle simulation engine \cite{capyle_home_2016}. 
 
 \begin{figure}[h]
   \centering
@@ -180,15 +182,16 @@ Burnable grass, Dense Forest and High Flammable Shrub are all variations of a bu
   \label{Valid state transitions}
 \end{figure}
 
+To produce a performant simulation which can cope with many generations, values which can be precomputed are done so in a setup function, and are then added to the attributes grid as an additional dimension.
 
-The transitions between states are calculated with a set of parameters for each cell, which are stored in an $20$-parameter list for each cell in a grid equal in width and height to the cell grid. 
+The transitions between states are then calculated using these attributes for each cell (along with the local properties of the cell, such as number of neighbours in a certain state), which are stored in an $20$-value array for each cell in a grid equal in width and height to the grid. 
 
 \begin{itemize}
-  \item [0] Height - Scalar value (m)
-  \item [1] Flammability
-  \item [2] Humidity
-  \item [3] Fuel
-  \item [4-12] Wind difference vectors (difference between wind in cell and neighbours) ($ms^{-1}$)
+  \item [0.] Height - Scalar value (m)
+  \item [1.] Flammability
+  \item [2.] Humidity
+  \item [3.] Fuel
+  \item [4-12.] Wind difference vectors (difference between wind in cell and neighbours) ($ms^{-1}$)
   % \item 8 Wind vectors 
   % \item 8 Height vectors  - assumption about heights
   % \item Flammability
@@ -196,7 +199,14 @@ The transitions between states are calculated with a set of parameters for each 
   % \item Fuel
 \end{itemize}
 
-Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our transitions, our grid is computed at every interval using two main functions, \code{ignite} and \code{reduce\_fuel}.
+\subsection{The effect of wind in the model}
+Wind has a significant effect on wildfires, with research suggesting that even a wind speed of $2-6ms^{-1}$ can increase the spread of the fire by an additional 50\% \cite{Beer1991}. As wind heavily discussed in both \cite{ALEXANDRIDIS2008191} and \cite{HERNANDEZENCINAS20071213}, there is a need to factor wind into this model.
+
+By computing wind vectors for the whole grid at setup time, we can then use the difference in wind angle to fire angle to predict the effect that the wind will have on the fire, and consequently, the resultant directional changes.
+
+
+
+Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our transitions, our grid is computed at every interval using two behaviours, \code{ignite} and \code{reduce\_fuel}, which perform as their names suggest, both returning new, computed versions of the grid.
 
 \subsection{Ignite}
 Height
@@ -217,8 +227,7 @@ Calculate wind weight, initially 0, (8,200,200), wind weight increased by number
 
 Base probability 0.5, normal woodland could catch on fire even if no wind as long as one neighbour is on fire. 
 
-Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step. This is consistent with the method of \cite{ALEXANDRIDIS2008191}.
-
+Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step. This is consistent with the method in \cite{ALEXANDRIDIS2008191}.
 
 If at least one cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the using a weighted sum of probabilities, dependent on the wind magnitude, the flammability of the cell that is on fire, and the difference in height compared to the neighbourhood.
 
@@ -232,7 +241,9 @@ How long does a normal forest fire take to travel 5km, then divide by 2: that's 
 
 This can be represented as the following equation:
 \subsection{Reduce Fuel}
+The fuel reduction technique considers every cell in the grid whose fuel attribute is greater than 0. The algorithm subtracts the \code{rate\_of\_flam} attribute from the current \code{fuel} value, clipping the results to 0. 
 
+Because the \code{rate\_of\_flam} attribute is provided for each cell at setup, representing the average loss of fuel per time step, tweaking the fuel values to closely mimic their real world counter parts is essential.
 
 \section{Results}
 \begin{displayquote}

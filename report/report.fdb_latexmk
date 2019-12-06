@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex report"] 1575637607 "report.aux" "report.bbl" "report" 1575637608
+["bibtex report"] 1575640411 "report.aux" "report.bbl" "report" 1575640412
   "/usr/local/texlive/2019/texmf-dist/bibtex/bst/apacite/apacite.bst" 1374530685 141073 9d7b79dbf9d91133318126032cff8c27 ""
-  "Bibliography.bib" 1575636466 3789 31444d410808b915f337fe3865c9c632 ""
-  "report.aux" 1575637608 5601 f2829b75c7a770bbb6683c58ef7a62dc "xelatex"
+  "Bibliography.bib" 1575640216 5204 a3249684a060076db7db65e052730c8f ""
+  "report.aux" 1575640411 6066 26618ab78c363c17db620c2b38dd2f3c "xelatex"
   (generated)
   "report.blg"
   "report.bbl"
-["xdvipdfmx"] 1575637608 "report.xdv" "report.pdf" "report" 1575637608
-  "report.xdv" 1575637608 147172 92b2cdd491f1e0097007b4bc6b7ba0d1 "xelatex"
+["xdvipdfmx"] 1575640412 "report.xdv" "report.pdf" "report" 1575640412
+  "report.xdv" 1575640411 175600 bc47ba4081ce8dfae51267f7147a2176 "xelatex"
   (generated)
   "report.pdf"
-["xelatex"] 1575637607 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1575637608
-  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1575637606 16515 d69023df71027eace21ecb9b2c24c3da ""
+["xelatex"] 1575640411 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1575640412
+  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1575640409 18968 159b62c77edea173641ef81b11ec9ad6 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -77,12 +77,12 @@
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1566248362 39543 a0bd1f17d0daea30a3905c0b020d0959 ""
   "/usr/local/texlive/2019/texmf-var/web2c/xetex/xelatex.fmt" 1569762900 3752885 bad9a154b0ec678c33c3bcdcabf57798 ""
   "/usr/local/texlive/2019/texmf.cnf" 1569762769 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "report.aux" 1575637608 5601 f2829b75c7a770bbb6683c58ef7a62dc "xelatex"
-  "report.bbl" 1575637607 4903 2b6df1a733c88b3c5be19a0cd8894b07 "bibtex report"
-  "report.out" 1575637608 1335 c07160581bbc8c029e6c9807b801d410 "xelatex"
-  "report.tex" 1575637606 16515 d69023df71027eace21ecb9b2c24c3da ""
+  "report.aux" 1575640411 6066 26618ab78c363c17db620c2b38dd2f3c "xelatex"
+  "report.bbl" 1575640411 5530 d234bf684870d85324a2dd1a8e0b7816 "bibtex report"
+  "report.out" 1575640411 1434 1b77372c5686ae0587475b030e14c310 "xelatex"
+  "report.tex" 1575640409 18968 159b62c77edea173641ef81b11ec9ad6 ""
   (generated)
-  "report.log"
   "report.out"
-  "report.xdv"
   "report.aux"
+  "report.log"
+  "report.xdv"

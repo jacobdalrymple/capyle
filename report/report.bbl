@@ -40,6 +40,33 @@ Alexandridis, A.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Beer%
+}{%
+Beer%
+}{%
+{\protect \APACyear {1991}}%
+}]{%
+Beer1991}
+\APACinsertmetastar {%
+Beer1991}%
+\begin{APACrefauthors}%
+Beer, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1991}{Feb}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {The interaction of wind and fire} {The interaction of
+  wind and fire}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Boundary-Layer Meteorology}{54}{3}{287--308}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/BF00183958} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/BF00183958} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 \APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
 \APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
 {\protect \APACyear {2016}}%
