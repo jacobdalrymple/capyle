@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  6 DEC 2019 13:53
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  6 DEC 2019 14:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -438,22 +438,22 @@ Overfull \hbox (7.51509pt too wide) in paragraph at lines 128--129
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [4] [5] [6] [7] [8] (./report.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 275.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 280.
  [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 275.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 280.
  (./report.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 275.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 275.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 280.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 280.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 1B77372C5686AE0587475B030E14C310.
+(rerunfilecheck)             Checksum: 18CE99FEBE718A899887AB5D8C1F5597.
  ) 
 Here is how much of TeX's memory you used:
- 11591 strings out of 492909
- 163517 string characters out of 6132923
- 283871 words of memory out of 5000000
- 15552 multiletter control sequences out of 15000+600000
+ 11593 strings out of 492909
+ 163549 string characters out of 6132923
+ 284117 words of memory out of 5000000
+ 15554 multiletter control sequences out of 15000+600000
  8630 words of font info for 41 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  33i,8n,45p,856b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.xdv (10 pages, 175600 bytes).
+Output written on report.xdv (10 pages, 174360 bytes).
