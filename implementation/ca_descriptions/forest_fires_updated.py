@@ -15,6 +15,8 @@ sys.path.append(main_dir_loc + 'capyle/guicomponents')
 import numpy as np
 import capyle.utils as utils
 from capyle.ca import Grid2D, Neighbourhood, randomise2d
+from math import pi
+
 
 # np.set_printoptions(threshold=sys.maxsize)
 
@@ -27,7 +29,7 @@ def setup(args):
     config.title = "Forest Fires Updated"
     config.dimensions = 2
     config.wrap = False
-    config.num_generations = 100
+    config.num_generations = 500
     # 0 = BURNT OUT
     # 1 = DEFAULT, BURNABLE GRASS
     # 2 = DENSE FOREST
@@ -52,57 +54,61 @@ def setup(args):
         sys.exit()
     return config
 
-# Vectorised function to reduce fuel based on 5 property arrays given
-def reduce_fuel(height, wind_x, wind_y, rate_of_flam, humidity, fuel):
-    # with_spare_fuel = (fuel - rate_of_flam) >= 0
-    # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
-    fuel = (fuel - rate_of_flam).clip(min=0)
-    return np.array([height, wind_x, wind_y, rate_of_flam, humidity, fuel]).T
-
 def scale(arr, min_, max_):
     return np.interp(arr, (arr.min(),
                                     arr.max()), (min_, max_))
+
+def unit_vector(vector):
+    return vector / np.linalg.norm(vector)
+
+def angle_between(v1, v2):
+    v1_u = unit_vector(v1)
+    v2_u = unit_vector(v2)
+    return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
     
-def cal_wind_weight(wind_x, wind_y, neighbour_states):
+def cal_wind_weight(wind_spread, neighbour_states):
 
-    wind_weight = np.linspace(1, 1, wind_x.shape[0])
+    wind_weight = np.linspace(0, 0, wind_spread.shape[0])
 
-    NW, N, NE, W, E, SW, S, SE = neighbour_states
-
-    #eastward_fire = (neighbour_states[:,4] == 4) #| (neighbour_states[:,2] == 4) | (neighbour_states[:,7] == 4)
-    ##westward_fire = (neighbour_states[:,0] == 4) | (neighbour_states[:,3] == 4) | (neighbour_states[:,5] == 4)
-    #x_wind = wind_x == -1
-    #east = eastward_fire & x_wind
-    #west = westward_fire & x_wind
-    wind_weight[E==4] = 5
-    wind_weight[W==4] = 0.1
+    for i in range(neighbour_states.shape[0]):
+        index = neighbour_states[i] == 4
+        wind_weight[index] += wind_spread[index,i]
 
     return wind_weight
 
+def cal_height_weight(height, height_neighbours, neighbour_states):
 
-def ignite(height, wind_x, wind_y, rate_of_flam, humidity, fuel, on_fire_neighbours, neighbour_states):
-    
-    on_fire_neighbours[on_fire_neighbours == 1] = 0.2
-    on_fire_neighbours[on_fire_neighbours == 2] = 0.5 
-    on_fire_neighbours[on_fire_neighbours > 4] = 1  
+    height_weight = np.linspace(1, 1, height_neighbours.shape[0])
 
-    wind_weight = cal_wind_weight(wind_x, wind_y, neighbour_states)
+    for i in range(neighbour_states.shape[0]):
+        index = neighbour_states[i] == 4
+        height_diff = height[index] - height_neighbours[index,i]
+        #height_angle = np.arctan(height_diff/5000)
+        #weight = np.exp(0.078 * height_angle[height_angle != 0])
+        #height_weight[index][height_angle != 0] += weight
+        height_weight[index] += 0.0051 * height_diff
 
-    prob = on_fire_neighbours*(rate_of_flam*np.random.rand(height.shape[0])*wind_weight)#*wind_x*wind_y
-    
-    min_flam = np.min(rate_of_flam)
-    return prob > 0.2#(0.25)#*4)
+    return height_weight
 
-# def ignite(height, wind, rate_of_flam, humidity, fuel, on_fire_neighbours):
 
-#     wind_prob = np.interp(wind, (wind.min(), wind.max()), (0, 0.5))
-#     height_prob = np.interp(height, (height.min(), height.max()), (0, 0.5))
+def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours, on_fire_neighbours, neighbour_states):
 
-#     prob = on_fire_neighbours*(wind_prob + height_prob + rate_of_flam)
-#     normalised_prob = np.interp(prob, (prob.min(), prob.max()), (0, 1))
+    wind_weight = cal_wind_weight(wind_spread, neighbour_states)
+    height_weight = cal_height_weight(height, height_neighbours, neighbour_states)
 
-#     return (normalised_prob > 0.5).astype(int)+1
+    prob = 0.5 * (on_fire_neighbours > 0).astype(int) * rate_of_flam * wind_weight * height_weight * np.random.rand(height.shape[0])
 
+    random = np.random.rand(prob.shape[0])
+
+    return random < prob
+
+
+# Vectorised function to reduce fuel based on 5 property arrays given
+def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours):
+    # with_spare_fuel = (fuel - rate_of_flam) >= 0
+    # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
+    fuel = (fuel - rate_of_flam).clip(min=0)
+    return np.array([height, rate_of_flam, humidity, fuel, *wind_spread.T, *height_neighbours.T]).T
 
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
@@ -110,47 +116,22 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     and return the new grid"""
 
     fireable = (grid == 1) | (grid == 2) | (grid == 3)
-    #print("fireable.shape")
-    #print(fireable.shape)
     on_fire = grid == 4
-
     cells_grid_attribs_fireable = grid_attribs[fireable]
 
-    # neighbours_of_onfire_cells = neighbourcounts[fireable]
-    # neighbours_of_onfire_cells[2]
-    # grid = ignites(grid, grid_attribs, neighbourstates.T)
     if cells_grid_attribs_fireable[:, 0].shape[0] > 0:
         should_be_on_fire = ignite(cells_grid_attribs_fireable[:, 0],
                                 cells_grid_attribs_fireable[:, 1],
                                 cells_grid_attribs_fireable[:, 2],
                                 cells_grid_attribs_fireable[:, 3],
-                                cells_grid_attribs_fireable[:, 4],
-                                cells_grid_attribs_fireable[:, 5],
+                                cells_grid_attribs_fireable[:, 4:12],
+                                cells_grid_attribs_fireable[:,12:],
                                 neighbourcounts[4][fireable],
                                 neighbourstates[:,fireable])
 
-        #print("should_be_on_fire.shape")
-        #print(should_be_on_fire.shape)
-        # print(grid[fireable]    )
-        # grid[fireable] = 3  
         fire_cells = grid[fireable]
         fire_cells[should_be_on_fire] = 4
-        grid[fireable] = fire_cells 
-    # fireable_and_should_be_on_fire = fireable & should_be_on_fire
-    # grid[fireable] = 
-    # print(grid[fireable][should_be_on_fire].shape)
-    # print("res.shape")
-    # print(res.shape)
-
-    # NW, N, NE, W, E, SW, S, SE = neighbourstates
-
-    # fire_close = (N == 2) | (E == 2) | (W == 2) | (S == 2)
-    # fire_far = (NW == 2) | (NE == 2) | (SW == 2) | (SE == 2)
-    # neighbour_on_fire = fire_close | fire_far
-
-    # cells_at_fire_risk = neighbour_on_fire & fireable
-    # grid[cells_at_fire_risk] = 2
-
+        grid[fireable] = fire_cells
 
     cells_grid_attribs_on_fire = grid_attribs[on_fire]
 
@@ -158,69 +139,102 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
                                         cells_grid_attribs_on_fire[:, 1],
                                         cells_grid_attribs_on_fire[:, 2],
                                         cells_grid_attribs_on_fire[:, 3],
-                                        cells_grid_attribs_on_fire[:, 4],
-                                        cells_grid_attribs_on_fire[:, 5])
+                                        cells_grid_attribs_on_fire[:, 4:12],
+                                        cells_grid_attribs_on_fire[:, 12:],)
 
     burnt_out = grid_attribs[:, :, 5] == 0
     grid[burnt_out] = 0
 
     return grid
 
+def cal_wind_spread_vectors(wind_x, wind_y):
+
+    wind_vector = np.array([wind_x, wind_y])
+    wind_mag = np.linalg.norm(wind_vector, axis=0)
+    fire_vectors = np.array([[1,1], [0,1], [-1,1], [1,0], [0,-1], [1,-1], [0,-1], [-1,-1]])
+    angle_diffs = np.zeros(8)
+
+    for i in range(8):
+        angle_diffs[i] = angle_between(wind_vector, fire_vectors[i])
+    
+    return np.exp(0.045 * wind_mag) * np.exp(wind_mag * 0.131 * (np.cos(angle_diffs) - 1))
 
 def main():
     """ Main function that sets up, runs and saves CA"""
-    # Get the config object from set up
     config = setup(sys.argv[1:])
+    wind_x = 0.01
+    wind_y = 0.01
+    grid_attribs = np.zeros((*config.grid_dims, 20))
 
-    # 0 = BURNT OUT
-    # 1 = DEFAULT, BURNABLE GRASS
-    # 2 = DENSE FOREST
-    # 3 = HIGH FLAMMABLE SCRUB
-    # 4 = ON FIRE
-    # 5 = BUILDINGS
-    # 6 = WATER
-
-
-    grid_attribs = np.zeros((*config.grid_dims, 6))
-
-
-    
     # 0: Height - Scalar value
-    # 1: Wind/Magnitude - East to West
-    # 2: Wind Mag - North to South
-    # 3: Flammability
-    # 4: Humidity?
-    # 5: Fuel
-    grid_attribs[...] = (0, -1, -1, 0.3, 0, 2)
-    # grid_attribs[:,:,0 ] = np.random.randint(-5, 5, size=grid_attribs[:, 0].shape[0])
-    # grid_attribs[:,:,1 ] = np.random.randint(0, 5, size=grid_attribs[:, 0].shape[0])
-    # print(winds.shape)
+    # 1: Flammability
+    # 2: Humidity?
+    # 3: Fuel
+    # 4-12: wind_spread_weights
+    grid_attribs[:,:,0] = 0
+    grid_attribs[:,:,1] = 1
+    grid_attribs[:,:,2] = 0
+    grid_attribs[:,:,3] = 20
+    grid_attribs[:,:,4:12] = cal_wind_spread_vectors(wind_x, wind_y)
+    
 
     config.initial_grid = np.ones( config.grid_dims)
     size_y , size_x = config.initial_grid.shape
+
     #Pond
     config.initial_grid[ int( 0.2*size_y ) : int( 0.3*size_y), int(0.1*size_x):int(0.3*size_x)] = 6
-    
+
     #Fire
-    config.initial_grid[ 0, size_x-101] = 4
-    config.initial_grid[ 0, size_x-102] = 4
-    config.initial_grid[ 1, size_x-102] = 4
-    config.initial_grid[ 1, size_x-103] = 4
-    
+    config.initial_grid[ 0, size_x-1] = 4
+
     #Town
-    config.initial_grid[ int(0.95*size_y) : size_y-1, 0: int(0.05*size_x)] = 5
+    town_x_coords = [0, int(0.05*size_x)]
+    town_y_coords = [int(0.95*size_y), size_y-1]
+    config.initial_grid[ town_y_coords[0] : town_y_coords[1], town_x_coords[0]: town_x_coords[1]] = 5
 
     #Dense Forest
-    config.initial_grid[ int( 0.6*size_y ) : int( 0.81*size_y), int(0.3*size_x): int(0.5*size_x)] = 2
-    grid_attribs[ int( 0.6*size_y ) : int( 0.81*size_y), int(0.3*size_x): int(0.5*size_x) ] = ( 0, 1, 0.1, 0.075, 0, 3)
+    d_forest_x_coords = [int(0.3*size_x), int(0.5*size_x)]
+    d_forest_y_coords = [int( 0.6*size_y ), int( 0.81*size_y)]
+    config.initial_grid[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1]] = 2
+    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 1] = 0.2
+    grid_attribs[d_forest_y_coords[0] : d_forest_y_coords[1], d_forest_x_coords[0] : d_forest_x_coords[1], 3] = 30
 
     #Scrubland
-    config.initial_grid[ int( 0.1*size_y ) : int( 0.7*size_y), int(0.65*size_x): int(0.7*size_x)] = 3
-    grid_attribs[int( 0.1*size_y ) : int( 0.7*size_y), int(0.65*size_x): int(0.7*size_x)] = (-1, 0.1, 1, 3, 0, 1)
+    scrubland_x_coords = [int(0.65*size_x), int(0.7*size_x)]
+    scrubland_y_coords = [int( 0.1*size_y ), int( 0.7*size_y)]
+    config.initial_grid[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1]] = 3
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 1] = 3
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 3] = 10
 
-    #grid_attribs[:, :, 1] = np.linspace(0.5, 0.5, grid_attribs[:, 0].shape[0])
-    #grid_attribs[:,:,2]  = np.linspace(4,4, grid_attribs[:,0].shape[0])
+    #top slope of cayon
+    grid_attribs[scrubland_y_coords[0] + 5 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -1
+    grid_attribs[scrubland_y_coords[0] + 4 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -125.75
+    grid_attribs[scrubland_y_coords[0] + 3 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -250.5
+    grid_attribs[scrubland_y_coords[0] + 2 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -375.25
+    grid_attribs[scrubland_y_coords[0] + 1 : scrubland_y_coords[0], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
+    #bottom slope of cayon
+    grid_attribs[scrubland_y_coords[1] - 1 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -1
+    grid_attribs[scrubland_y_coords[1] - 2 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -125.75
+    grid_attribs[scrubland_y_coords[1] - 3 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -250.5
+    grid_attribs[scrubland_y_coords[1] - 4 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -375.25
+    grid_attribs[scrubland_y_coords[1] - 5 : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
+    #sides of cayon
+    grid_attribs[scrubland_y_coords[0] : scrubland_y_coords[1], scrubland_x_coords[0] : scrubland_x_coords[1], 0] = -500
 
+    transitions = [[1,1], [0,1], [-1,1], [1,0], [0,-1], [1,-1], [0,-1], [-1,-1]]
+    height_neighbours = np.zeros((*config.grid_dims, 8))
+
+    #grid_attribs[:,:,0] = 0
+
+    for i in range(grid_attribs.shape[0]):
+        for j in range(grid_attribs.shape[1]):
+            for k in range(len(transitions)):
+                x_coord = j - transitions[k][0]
+                y_coord = i - transitions[k][1]
+                if (0 <= x_coord < 200) and (0 <= y_coord < 200):
+                    height_neighbours[i][j][k] = grid_attribs[y_coord, x_coord, 0]
+
+    grid_attribs[:,:,12:] = height_neighbours
 
     # Create grid object using parameters from config + transition function
     grid = Grid2D(config, (transition_function, grid_attribs))
