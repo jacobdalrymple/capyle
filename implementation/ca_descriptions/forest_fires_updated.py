@@ -107,8 +107,8 @@ def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours,
 def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours):
     # with_spare_fuel = (fuel - rate_of_flam) >= 0
     # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
-    fuel = (fuel - rate_of_flam).clip(min=0)
-    return np.array([height, rate_of_flam, humidity, fuel, *wind_spread.T, *height_neighbours.T]).T
+    new_fuel = (fuel - rate_of_flam).clip(min=0)
+    return np.array([height, rate_of_flam, humidity, new_fuel, *(wind_spread.T), *(height_neighbours.T)]).T
 
 
 def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
@@ -142,7 +142,7 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
                                         cells_grid_attribs_on_fire[:, 4:12],
                                         cells_grid_attribs_on_fire[:, 12:],)
 
-    burnt_out = grid_attribs[:, :, 5] == 0
+    burnt_out = grid_attribs[:, :, 3] == 0
     grid[burnt_out] = 0
 
     return grid
