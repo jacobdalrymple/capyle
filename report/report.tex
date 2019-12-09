@@ -12,6 +12,12 @@
 \usepackage{apacite}
 \usepackage[title, titletoc]{appendix}
 \usepackage[parfill]{parskip}
+\usepackage{array,etoolbox}
+\usepackage{float}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
+
 
 \geometry{lmargin=37mm, rmargin=25mm} 
 
@@ -48,7 +54,7 @@
 \section{Abstract}
 
 \section{Introduction}
-By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given to us.
+By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given.
 
 By using a minimal state set and an auxiliary 20-value cell attribute grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
 
@@ -130,18 +136,18 @@ Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} al
   The advantage of moving the fuel state into an attribute of the cell is the greater precision of fuel that can be stored, while also maintaining a smaller amount of states. By limiting fuel state to discrete variables, the forest fire spread will lose valuable resolution which can be maintained with a different data structure.
 
 \section{Methodology}
-\begin{displayquote}
-  - A short summary (IN YOUR OWN WORDS) of how the CA approach can
-  be applied to model a forest fire. This should assume that the reader is a non-expert in modelling or
-  Computer Science in general. You should explain in English (as opposed to simply using code), how
-  you have extended the model you have been given in order to investigate the features mentioned.
-  You can also use simple flow or state transition diagrams to support you description. You can also
-  refer to relevant python code included in an appendix.
-  It is expected that in extending/developing your model you will have to make some assumptions
-  about how to implement particular behaviours, and also in terms of the parameters (values) you
-  choose to use e.g. to represent different fuel resources/burning times. You are not expected to
-  become experts in this area but you should at state justify any assumptions you make.
-\end{displayquote} 
+% \begin{displayquote}
+%   - A short summary (IN YOUR OWN WORDS) of how the CA approach can
+%   be applied to model a forest fire. This should assume that the reader is a non-expert in modelling or
+%   Computer Science in general. You should explain in English (as opposed to simply using code), how
+%   you have extended the model you have been given in order to investigate the features mentioned.
+%   You can also use simple flow or state transition diagrams to support you description. You can also
+%   refer to relevant python code included in an appendix.
+%   It is expected that in extending/developing your model you will have to make some assumptions
+%   about how to implement particular behaviours, and also in terms of the parameters (values) you
+%   choose to use e.g. to represent different fuel resources/burning times. You are not expected to
+%   become experts in this area but you should at state justify any assumptions you make.
+% \end{displayquote} 
 
 Cellular Automata is a term to describe the simulation of a discrete number of cells and interactions across a cell space (grid). Each cell can have one state at any one time step (generation). Cells can change state. The permitted changes from any one state to another state is determined by a transition function. The transition function can consider global properties, such as the current time step, as well as local properties, such as the cell's current state, as well as its neighbourhood - a set of cells near the cell. 
 
@@ -192,6 +198,7 @@ The transitions between states are then calculated using these attributes for ea
   \item [2.] Humidity
   \item [3.] Fuel
   \item [4-12.] Wind difference vectors (difference between wind in cell and neighbours) ($ms^{-1}$)
+  \item [13-20.] Height difference vectors (difference between height in cell and neighbours) ($m$)
   % \item 8 Wind vectors 
   % \item 8 Height vectors  - assumption about heights
   % \item Flammability
@@ -200,16 +207,18 @@ The transitions between states are then calculated using these attributes for ea
 \end{itemize}
 
 \subsection{Modelling the effect of wind in the model}
-Wind has a significant effect on wildfires, with research suggesting that even a wind speed of $2$ to $6ms^{-1}$ can increase the spread of the fire by an additional 50\% \cite{Beer1991}. As wind heavily is discussed in both \cite{ALEXANDRIDIS2008191} and \cite{HERNANDEZENCINAS20071213}, there is a need to factor wind into this model.
+Wind has a significant effect on wildfires, with research suggesting that even a wind speed of $2$ to $6ms^{-1}$ can increase the spread of the fire by an additional 50\% \cite{Beer1991}. As wind heavily is discussed in both \cite{ALEXANDRIDIS2008191} and \cite{HERNANDEZENCINAS20071213}, factoring wind into this model would effectively build on their findings.
 
-By computing wind vectors for the whole grid at setup time, we can then use the difference in wind angle and `fire angle` to predict the effect that the wind will have on the fire, and consequently, the resultant directional changes.
+By computing wind vectors for the whole grid at setup time, we can then use the difference in wind angle and `flame angle` to predict the effect that the wind will have on the fire, and consequently, the resultant directional changes.
 
-The fire angle can be defined as.
+The flame angle can be defined as the angle of between the direction of the fire spread and the current cell.
 
 By initially setting wind to be two scalars, an  $\pm$ value for wind in the X axis, and in the Y axis, and then converting this to a vector, we can then use $acos(v_1,v_2)$ where our wind vector $= v_1$, and our `fire angle' $= v_2$, to calculate the possible `magnitude` of fire for each neighbour of each cell. As each cell has 8 neighbours, an 8-value array is generated, and added to our cell attributes grid.
 
 \subsubsection{Modelling the effect of height in the model}
 The implementation of height in this model begins with an assumption: rate of flammability is inversely proportional to the height difference.
+
+By calculating the difference in the heights between a cell and its neighborhood, a cell's chance of setting on fire can be affected by the number of on fire cells and this distance.
 
 \subsection{Calculating transitions}
 
@@ -232,47 +241,212 @@ Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our trans
 
 % Calculate wind weight, initially 0, (8,200,200), wind weight increased by number of neighbours on fire.
 
-Base probability 0.5, normal woodland could catch on fire even if no wind as long as one neighbour is on fire. 
+Ignite works by calculating an ignition probability for each cell, then generating a random threshold probability for each cell. If the calculated ignition probability is larger than the random threshold, then in the next time step that cell is to catch fire.
 
-Given the parameters, a probability is derived: the chance of the current cell setting on fire in the next time step. This is consistent with the method in \cite{ALEXANDRIDIS2008191}.
+The ignition probability of cell $c$ is calculated as follows:
 
-If at least one cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the using a weighted sum of probabilities, dependent on the wind magnitude, the flammability of the cell that is on fire, and the difference in height compared to the neighbourhood.
+\[ prob(c) = 0.5n(c)*f(c)*w(c)*h(c)*v \]
 
-Generate random array, see if below it, schotachisticty.
+where $n(c)$ is returns a 1 if the cell has any on fire neighbours, or 0 if it has none; $f(c)$ is the rate of flammability for the cell (\code{rate\_of\_flam}); $w(c)$ is the wind weight for that cell; $h(c)$ is the height weight for the cell, and $v$ represents a degree of randomness.
+
+The height weight for a cell is computed by comparing the current cell against its on fire neighbours' heights. For every neighbour that is on fire, the \code{height\_weight} is increased by a factor of the height difference ($0.0051 *$ height difference).  
+
+Similarly, the wind weight for a cell is computed by consulting the 8-dimensional wind magnitude grid attributes generated at setup. For each on fire neighbour of a cell, the associated wind value from the 8-dimensional grid attributes grid is summed.  
+% prob = 0.5 * (on_fire_neighbours > 0).astype(int) * rate_of_flam * wind_weight * height_weight * np.random.rand(height.shape[0])
+
+% random = np.random.rand(prob.shape[0])
+
+% return random < prob
+
+% Base probability 0.5, normal woodland could catch on fire even if no wind as long as one neighbour is on fire. 
 
 
-How long does a normal forest fire take to travel 5km, then divide by 2: that's our speed. 
+
+% If at least one cell is on fire in the cell's neighbourhood, the chance of catching fire is calculated by the using a weighted sum of probabilities, dependent on the wind magnitude, the flammability of the cell that is on fire, and the difference in height compared to the neighbourhood.
+
+% Generate random array, see if below it, schotachisticty.
 
 
-This can be represented as the following equation:
+
+% This can be represented as the following equation:
 \subsubsection{Reduce Fuel}
 The fuel reduction technique considers every cell in the grid whose fuel attribute is greater than 0. The algorithm subtracts the \code{rate\_of\_flam} attribute from the current \code{fuel} value, clipping the results to 0. 
 
-Because the \code{rate\_of\_flam} attribute is provided for each cell at setup, representing the average loss of fuel per time step, tweaking the fuel values to closely mimic their real world counter parts is essential.
+% Because the \code{rate\_of\_flam} attribute is provided for each cell at setup, representing the average loss of fuel per time step, tweaking the fuel values to closely mimic their real world counter parts is essential.
 
 \section{Results}
-\begin{displayquote}
-  In this section you should describe what simulations you
-carried out under which conditions (e.g. parameter sets mentioned above, wind direction,…) and
-how long the simulation was run for. You should use fully labelled diagrams (e.g. screenshots or
-where appropriate, line graphs) to display your results and you should also describe your results in
-text. Additional results can be included in an appendix
-\end{displayquote}
+% \begin{displayquote}
+%   In this section you should describe what simulations you
+% carried out under which conditions (e.g. parameter sets mentioned above, wind direction,…) and
+% how long the simulation was run for. You should use fully labelled diagrams (e.g. screenshots or
+% where appropriate, line graphs) to display your results and you should also describe your results in
+% text. Additional results can be included in an appendix
+% \end{displayquote}
+After devising a model which can allow for differing wind speeds, heights and various different types of flammable land on a cellular automata grid, investigations into the possible scenarios requested by the town officials can begin. It has been suggested that a forest fire can travel anywhere between $0.46ms^{-1}$ \cite{viegas2009recent} to $2.60ms^{-1}$, depending on wind speed. As listed by the provided specification, the proposed location of the incinerator is $70.71km$ away from the furthest edge of the town. 
+
+% TODO: Calculate relative speed
+% This would indicate it would only take 8.5 hours to reach the town?
+
+
+
   \subsection{Dense forest locations}
+
   \subsection{Best water locations}
-  \subsection{Wind Direction - East to West}
-  \subsection{Wind Direction - North to South}
-  \subsection{Wind Direction - North East}
-  \subsection{Wind Direction - South West}
-  \subsection{Resolution     -  50 x  50}
-  \subsection{Resolution     - 200 x 200}
-  \subsection{Resolution     - 400 x 400}
+  Due to the small size of the water available, ensuring the timely deposit of the water is essential to its effectiveness.
+
+  By experimenting with different water locations across the grid, and comparing the amount of time it takes for the fire to reach the city, it is possible to devise an optimal location.
+
+  Due to the nature of this solution's implementation, the time step at which water can be dropped can be adjusted. Because this system simulates an `airdrop' of water, it was important to try and simulate the effects of the water being dropped at various different points in time, and at different points on the fire front.
+
+  If the water is in place when the fire arrives at a location, the fire would migrate around it. Modelling the effect of the airdrop shows that dropping the water at the right time does make a difference.
+
+  \subsubsection{Choosing locations}
+  It is important in our assessment of optimal water location to choose the best areas to sample, not least due to the small size of the water available ($10km^2$)\cite{christopher_2019} suggests the optimal placing of water in a forest fire is near the source, and on the `attacking front' of the fire.
+
+  To this end, the following water placements were devised:
+
+  \begin{itemize}
+    \item[(130,10).] The northern end of the canyon - This is to try and make a blockade which extends the journey of the fire.
+    \item[(130,140).] The southern end of the canyon - similar tactic.
+    \item[(190, 200).]  The top right. What would happen if the fire could be stopped early into its journey?
+    \item[ (10,182).] The top of the town. If for whatever reason it wasn't feasible for the crews to reach the start of the fire, would an effective preventative measure be blocking the surrounding area near the town?
+    \item[ (10, 190).] Bottom right hand side of the town. A similar tactic as above. These are the nearest two sides to the wildfire front.
+    \item[ (80, 100).] Between the lake and the dense forest - Does decreasing this area make a difference?
+    \item[ (80, 75).] The same tactic but closer to the lake    
+  \end{itemize}
+
+  \subsubsection{Results}
+
+  
+
+
+  \begin{table}[H]
+    \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+    Top left & Bottom right & gen reached & dump gen & gen diff & gens to reach & +/- \\ \hline
+    130, 140 & 140, 150     & 172                          & 182      & 10       & 298           & -8  \\ \hline
+    190 ,200 & 200, 10      & 0                            & 14       & 14       & 302           & -4  \\ \hline
+    80,75    & 90,85        & 150                          & 0        & -150     & 303           & -3  \\ \hline
+    130,10   & 140,20       & 77                           & 0        & -77      & 303           & -3  \\ \hline
+    130, 140 & 140, 150     & 172                          & 172      & 0        & 304           & -2  \\ \hline
+    \textbf{-}        & \textbf{-}            &\textbf{ }-                            & \textbf{-}        & \textbf{-}        & \textbf{306}           & \textbf{0}   \\ \hline
+    10,190   & 20,200       & 295                          & 305      & 10       & 306           & 0   \\ \hline
+    80,100   & 90,110       & 157                          & 167      & 10       & 306           & 0   \\ \hline
+    130,10   & 140,20       & 77                           & 87       & 10       & 306           & 0   \\ \hline
+    10, 182  & 20, 192      & 290                          & 300      & 10       & 307           & 1   \\ \hline
+    10, 182  & 20, 192      & 290                          & 0        & -290     & 308           & 2   \\ \hline
+    80,100   & 90,110       & 157                          & 0        & -157     & 309           & 3   \\ \hline
+    80,100   & 90,110       & 157                          & 157      & 0        & 309           & 3   \\ \hline
+    80, 75   & 90, 85       & 150                          & 160      & 10       & 309           & 3   \\ \hline
+    10,190   & 20,200       & 295                          & 300      & 5        & 310           & 4   \\ \hline
+    80, 75   & 90, 85       & 150                          & 150      & 0        & 310           & 4   \\ \hline
+    130,10   & 140,20       & 77                           & 77       & 0        & 311           & 5   \\ \hline
+    190 ,200 & 200, 10      & 0                            & 15       & 15       & 312           & 6   \\ \hline
+    190 ,200 & 200, 10      & 0                            & 20       & 20       & 312           & 6   \\ \hline
+    130, 140 & 140, 150     & 172                          & 0        & -172     & 312           & 6   \\ \hline
+    10, 182  & 20, 192      & 290                          & 295      & 5        & 313           & 7   \\ \hline
+    10,190   & 20,200       & 295                          & 0        & -295     & 314           & 8   \\ \hline
+    190 ,200 & 200, 10      & 0                            & 0        & 0        & -             & -   \\ \hline
+    190 ,200 & 200, 10      & 0                            & 13       & 13       & -             & -   \\ \hline
+    \end{tabular}
+    \end{table}
+
+  \subsection{Wind Direction}
+  The town is situated $70.81km$ away from the incinerator in a south easterly direction - a wind in this direction would increase the velocity towards the town. Although the specification presented does not specify a region of the United States, a report by \cite{Thompson2011} suggests the state of California is most prone to wildfires (50.22\%). 
+  
+  Research by Guzman-Morales et al. proposes the average wind speed in wildfire season in California (traditionally September to January) is about $6ms^{-1}$, and also creates three boundaries: Low winds ( $< 5ms^{-1}$), moderate winds ($ 5 - 15 ms^{-1}$), and extreme winds ($ \geq 15ms^{-1}$) \cite{doi:10.1002/2016GL067887}. 
+  
+  By assessing the impact of these differing wind speeds, the impact of an incinerator fire can be shown in realistic boundaries. Results were taken for three different wind speeds based on the values above. These are listed as $mgen^{-1}$, or meters per generation.
+  % By assessing the , further confidence in the real world implications of our model can be obtained.
+
+
+  \begin{table}[h]
+    \begin{center}
+    % \begin{tabular}{|r|l|r|r|l|}
+    % \hline
+    % ID & Name & $w_x$ $(m)$ & $w_y$ $(m)$ & gens to city \\ \hline
+    % 1 & No wind & 0 & 0 & 304                 \\ \hline
+    % 2 & East (Average)  & 6 & 0 & 478                 \\ \hline
+    % 3 & East (High moderate) & 10 & 0 & 669                 \\ \hline
+    % 4 & East (Extreme) & 15 & 0 & 1085                 \\ \hline
+    % 5 & West (Average)  & -6 & 0 & 325                 \\ \hline
+    % 6 & West (High moderate) & -10 & 0 & 349                 \\ \hline
+    % 7 & West (Extreme) & -15 & 0 & 385                 \\ \hline
+    % 8 & South (Average)  & 0 & 6 & 335                 \\ \hline
+    % 9 & South (High moderate)  & 0 & 10 & 379                 \\ \hline
+    % 10 & South (Extreme)  & 0 & 15 & 388                 \\ \hline
+    % 11 & North (Average)  & 0 & -6 & 460                 \\ \hline
+    % 12 & North (High moderate)  & 0 & -10 & 600                 \\ \hline
+    % 13 & North (Extreme)  & 0 & -15 & 921                 \\ \hline
+
+    % 14 & South-West (Average)  & -6 & 6 & 298                 \\ \hline
+    % 15 & South-West (High moderate)  & -10 & 10 & 280                 \\ \hline
+    % 16 & South-West (Extreme)  & -15 & 15 & 329                 \\ \hline
+    % 17 & North-West (Average) & -6 & -6 & 465                \\ \hline
+    % 17 & North-West (High Moderate) & -10 & -10 & 748                \\ \hline
+    % 17 & North-West (Extreme) & -15 & -15 & 2337                \\ \hline
+
+      \begin{tabular}{|l|l|l|l|l|l|l|l|}
+      \hline
+      CD  & $\pm6mgen^{-1}$ & $\pm10mgen^{-1}$ & $\% \Delta$ & $\pm15mgen^{-1}$ & $\% \Delta$  & Avg. gens & AVG$\% \Delta$ \\ \hline
+      SW & 298                                            & 280                                        & -6.43\% & \textbf{329}                                  & 14.89\% & 226.73                            & 4.23\%      \\ \hline
+      W       & 325                                            & 349                                        & 6.88\%  & 385                                  & 9.35\%  & 264.77                            & 8.11\%      \\ \hline
+      S      & 335                                            & 379                                        & 11.61\% & 388                                  & 2.32\%  & 275.53                            & 6.96\%      \\ \hline
+      N      & 460                                            & 600                                        & 23.33\% & 921                                  & 34.85\% & 495.31                            & 29.09\%     \\ \hline
+      E       & 478                                            & 669                                        & 28.55\% & 1085                                 & 38.34\% & 558.07                            & 33.45\%     \\ \hline
+      NE & 465                                            & 748                                        & 37.83\% & \textbf{2337}                                 & 67.99\% & 887.59                            & 52.91\%     \\ \hline
+      \end{tabular}
+\end{center}
+Various wind directions and magnitudes and resultant number of generations taken to reach the city.
+    \end{table}
+
+    The results presented above suggest a successful wind technique has been implemented: the winds that blow away from the town do result in an increased number of generations before the fire hits.
+    
+    
+    \begin{figure}[h]
+      \centering
+        \includegraphics[width=\linewidth]{imgs/graphs/wind.png}
+      \caption{Graph showing the number of generations taken to reach the city against differing wind speeds.}
+      \label{}
+    \end{figure}
+
+    There are two notable values in the wind data that could be seen as outliers, and such deserve discussion.
+  
+
+
+
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=0.75\linewidth]{imgs/wind/x-15y15_gen329}
+      \caption{In extreme South Westerly winds, the fire is affected by the placement of the dense forest, canyon, and water, such that the spread towards the town is slower than that of a fire with lower wind speeds.}
+      \label{}
+    \end{figure}
+
+
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=0.75\linewidth]{imgs/wind/x-15y-15_gen2337}
+      \caption{In extreme North Westerly winds, the majority of the fire spread misses the town. It is only after roughly 2100 generations does the fire eventually spread in the south direction enough to reach the town.}
+      \label{}
+    \end{figure}
+    % \subsubsection{No Wind}
+
+    % \subsubsection{East to West}
+    % \subsubsection{North to South}
+    % \subsubsection{North East}
+    % \subsubsection{South West}
+
+  % \subsection{Resolution     -  50 x  50}
+  % \subsection{Resolution     - 200 x 200}
+  % \subsection{Resolution     - 400 x 400}
 \newpage
+
+
 \section{Discussion of model and conclusions} 
 \section{Conclusion}
 
 \newpage
-\renewcommand{\bibname}{Bibliography}
+\renewcommand{\bibname}{References}
 \bibliographystyle{apacite}
 \bibliography{Bibliography.bib}
 

@@ -85,6 +85,31 @@ capyle_home_2016}%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Christopher%
+}{%
+Christopher%
+}{%
+{\protect \APACyear {2016}}%
+}]{%
+christopher_2019}
+\APACinsertmetastar {%
+christopher_2019}%
+\begin{APACrefauthors}%
+Christopher, B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+\APACrefbtitle {Does Using Airplanes to Put out Forest Fires Actually Work?}
+  {Does using airplanes to put out forest fires actually work?}
+\newblock
+\begin{APACrefURL}
+  \url{https://priceonomics.com/does-using-airplanes-to-put-out-forest-fires/}
+  \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Clarke%
 , Brass%
 \BCBL {}\ \BBA {} Riggan%
@@ -151,6 +176,45 @@ Encinas, L\BPBI H.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Guzman-Morales%
+, Gershunov%
+, Theiss%
+, Li%
+\BCBL {}\ \BBA {} Cayan%
+}{%
+Guzman-Morales%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+doi:10.1002/2016GL067887}
+\APACinsertmetastar {%
+doi:10.1002/2016GL067887}%
+\begin{APACrefauthors}%
+Guzman-Morales, J.%
+, Gershunov, A.%
+, Theiss, J.%
+, Li, H.%
+\BCBL {}\ \BBA {} Cayan, D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Santa Ana Winds of Southern California: Their
+  climatology, extremes, and behavior spanning six and a half decades} {Santa
+  ana winds of southern california: Their climatology, extremes, and behavior
+  spanning six and a half decades}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Geophysical Research Letters}{43}{6}{2827-2834}.
+\newblock
+\begin{APACrefURL}
+  \url{https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL067887}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1002/2016GL067887} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Ntinas%
 , Moutafis%
 , Trunfio%
@@ -178,6 +242,44 @@ Ntinas, V\BPBI G.%
   data-driven simulation of wildfire spreading}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{Journal of computational science}{21}{}{469--485}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Thompson%
+, Calkin%
+, Finney%
+, Ager%
+\BCBL {}\ \BBA {} Gilbertson-Day%
+}{%
+Thompson%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+Thompson2011}
+\APACinsertmetastar {%
+Thompson2011}%
+\begin{APACrefauthors}%
+Thompson, M\BPBI P.%
+, Calkin, D\BPBI E.%
+, Finney, M\BPBI A.%
+, Ager, A\BPBI A.%
+\BCBL {}\ \BBA {} Gilbertson-Day, J\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{Aug}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {Integrated national-scale assessment of wildfire risk to
+  human and ecological values} {Integrated national-scale assessment of
+  wildfire risk to human and ecological values}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Stochastic Environmental Research and Risk
+  Assessment}{25}{6}{761--780}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/s00477-011-0461-0}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/s00477-011-0461-0} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -211,6 +313,30 @@ Trunfio, G\BPBI A.%
 \newblock
 \APACjournalVolNumPages{ACM Transactions on Modeling and Computer Simulation
   (TOMACS)}{22}{1}{6}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Viegas%
+\ \protect \BOthers {.}}{%
+Viegas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2009}}%
+}]{%
+viegas2009recent}
+\APACinsertmetastar {%
+viegas2009recent}%
+\begin{APACrefauthors}%
+Viegas, D\BPBI X.%
+\BCBT {}\ \BOthersPeriod {.}
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2009}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Recent forest fire related accidents in Europe} {Recent
+  forest fire related accidents in europe}.{\BBCQ}
+\newblock
+
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}

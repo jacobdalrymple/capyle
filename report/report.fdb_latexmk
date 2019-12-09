@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex report"] 1575641333 "report.aux" "report.bbl" "report" 1575641362
+["bibtex report"] 1575914376 "report.aux" "report.bbl" "report" 1575914379
   "/usr/local/texlive/2019/texmf-dist/bibtex/bst/apacite/apacite.bst" 1374530685 141073 9d7b79dbf9d91133318126032cff8c27 ""
-  "Bibliography.bib" 1575640216 5204 a3249684a060076db7db65e052730c8f ""
-  "report.aux" 1575641360 6355 28dcc04bc10c7621b8c483a9c195028c "xelatex"
+  "Bibliography.bib" 1575913764 9045 1d6e2c00a20029eea6a34a5731d0f354 ""
+  "report.aux" 1575914377 8352 8fd2425d528b3106012562e0b05ecb4a "xelatex"
   (generated)
   "report.bbl"
   "report.blg"
-["xdvipdfmx"] 1575641360 "report.xdv" "report.pdf" "report" 1575641362
-  "report.xdv" 1575641360 174360 d426e9f50b5e081b29d7109b0f59ac51 "xelatex"
+["xdvipdfmx"] 1575914378 "report.xdv" "report.pdf" "report" 1575914379
+  "report.xdv" 1575914377 237252 84dc0256eaae47f59642aecaa9f200a8 "xelatex"
   (generated)
   "report.pdf"
-["xelatex"] 1575641359 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1575641362
-  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1575641362 19625 500e9571cc3567564c7c06b140b50727 ""
+["xelatex"] 1575914376 "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" "report.xdv" "report" 1575914379
+  "/mnt/d/ATUOS/CSAI/y3/bio/capyle/report/report.tex" 1575914375 32891 d4c91bf10d9084201230b7e25afba879 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -50,6 +50,7 @@
   "/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.def" 1557610285 19820 93221daf51aa801243ec22c065084f9c ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.sty" 1557610285 61418 900e3c73f3da1f59a4c66f0bbd6341e3 ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/etoolbox/etoolbox.sty" 1569190624 45259 743c52a37a6e5ed83cfe0e128b2da10d ""
+  "/usr/local/texlive/2019/texmf-dist/tex/latex/float/float.sty" 1137110151 6749 16d2656a1984957e674b149555f1ea1d ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty" 1525727744 41645 0653033a985e06c69a2a9cea9a95e31a ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1459978653 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1465944070 1224 978390e9c2234eab29404bc21b268d1e ""
@@ -70,6 +71,7 @@
   "/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/kvoptions.sty" 1463608860 22417 1d9df1eb66848aa31b18a593099cf45c ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty" 1463608860 9581 023642318cef9f4677efe364de1e2a27 ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty" 1547677674 4152 3f6e512e6999979e82f39978a3e61b9e ""
+  "/usr/local/texlive/2019/texmf-dist/tex/latex/tools/array.sty" 1546812253 12527 31ab547f6520657998ecf91709f950ac ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/tools/calc.sty" 1523050425 10212 357072c1d20578a30d6387d8a22e72ab ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/tools/multicol.sty" 1546812253 30849 03c22687ffd5fa0f72f2a417c6cf4ce1 ""
   "/usr/local/texlive/2019/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
@@ -77,12 +79,15 @@
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1566248362 39543 a0bd1f17d0daea30a3905c0b020d0959 ""
   "/usr/local/texlive/2019/texmf-var/web2c/xetex/xelatex.fmt" 1569762900 3752885 bad9a154b0ec678c33c3bcdcabf57798 ""
   "/usr/local/texlive/2019/texmf.cnf" 1569762769 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "report.aux" 1575641360 6355 28dcc04bc10c7621b8c483a9c195028c "xelatex"
-  "report.bbl" 1575641333 5530 d234bf684870d85324a2dd1a8e0b7816 "bibtex report"
-  "report.out" 1575641360 1667 18ce99febe718a899887ab5d8c1f5597 "xelatex"
-  "report.tex" 1575641362 19625 500e9571cc3567564c7c06b140b50727 ""
+  "imgs/graphs/wind.png" 1575903814 38838 b8e7c51dc83315deeace44ff58555e70 ""
+  "imgs/wind/x-15y-15_gen2337.png" 1575894245 5064 ae6844ab2c182d04895ac33ff7e0fc11 ""
+  "imgs/wind/x-15y15_gen329.png" 1575893750 6351 d243a460d42dfe1a49bcc3ecefc3c960 ""
+  "report.aux" 1575914377 8352 8fd2425d528b3106012562e0b05ecb4a "xelatex"
+  "report.bbl" 1575914376 8680 fbf0169185bd8e0e26f6724a25bce055 "bibtex report"
+  "report.out" 1575914377 1264 885fe01a4a1fa7efd233d179aa69e592 "xelatex"
+  "report.tex" 1575914375 32891 d4c91bf10d9084201230b7e25afba879 ""
   (generated)
-  "report.xdv"
-  "report.log"
   "report.out"
   "report.aux"
+  "report.log"
+  "report.xdv"

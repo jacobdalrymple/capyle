@@ -17,9 +17,9 @@ import capyle.utils as utils
 from capyle.ca import Grid2D, Neighbourhood, randomise2d
 from math import pi
 
-
+import time
+from math import floor
 # np.set_printoptions(threshold=sys.maxsize)
-
 
 def setup(args):
     """Set up the config object used to interact with the GUI"""
@@ -73,7 +73,8 @@ def cal_wind_weight(wind_spread, neighbour_states):
     for i in range(neighbour_states.shape[0]):
         index = neighbour_states[i] == 4
         wind_weight[index] += wind_spread[index,i]
-
+    # print("\n\n\n\nwind_weight")
+    # print(wind_weight)
     return wind_weight
 
 def cal_height_weight(height, height_neighbours, neighbour_states):
@@ -82,12 +83,14 @@ def cal_height_weight(height, height_neighbours, neighbour_states):
 
     for i in range(neighbour_states.shape[0]):
         index = neighbour_states[i] == 4
+        # print(index)
         height_diff = height[index] - height_neighbours[index,i]
         #height_angle = np.arctan(height_diff/5000)
         #weight = np.exp(0.078 * height_angle[height_angle != 0])
         #height_weight[index][height_angle != 0] += weight
         height_weight[index] += 0.0051 * height_diff
-
+    # print("\n\n\n\n height_weight")
+    # print(height_weight.shape )
     return height_weight
 
 
@@ -111,9 +114,31 @@ def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighb
     return np.array([height, rate_of_flam, humidity, new_fuel, *(wind_spread.T), *(height_neighbours.T)]).T
 
 
-def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
+def transition_function(grid, neighbourstates, neighbourcounts, time_to_drop, grid_attribs ):
     """Function to apply the transition rules
     and return the new grid"""
+    # print(time_to_drop)
+    # print(time_to_drop[0])
+    if(time_to_drop[0] == 0):
+        square = grid.shape[0]
+        offset_y = 0
+
+        # top_y = offset_y + 200 - int(0.05*square)
+        # bottom_y = top_y + int(0.05*square)
+
+        # offset_x = 0
+        # left_x = offset_x+int(0.05*square)
+        # right_x = left_x+int(0.05*square)
+        top_y = 140
+        bottom_y = top_y + 10
+
+        left_x = 130
+        right_x = left_x + 10
+        print("("+str(left_x)+","+str(top_y)+")",
+              "("+str(right_x)+","+str(bottom_y)+")")
+        grid[top_y:bottom_y, left_x: right_x] = 6
+
+
 
     fireable = (grid == 1) | (grid == 2) | (grid == 3)
     on_fire = grid == 4
@@ -145,6 +170,9 @@ def transition_function(grid, neighbourstates, neighbourcounts, grid_attribs):
     burnt_out = grid_attribs[:, :, 3] == 0
     grid[burnt_out] = 0
 
+    time_to_drop[0] = time_to_drop[0] -1
+
+
     return grid
 
 def cal_wind_spread_vectors(wind_x, wind_y):
@@ -166,6 +194,7 @@ def main():
     wind_y = 0.01
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
+    time_to_drop = np.array([182])
     # 0: Height - Scalar value
     # 1: Flammability
     # 2: Humidity?
@@ -181,6 +210,8 @@ def main():
     config.initial_grid = np.ones( config.grid_dims)
     size_y , size_x = config.initial_grid.shape
 
+    #Ariel drop
+   
     #Pond
     config.initial_grid[ int( 0.2*size_y ) : int( 0.3*size_y), int(0.1*size_x):int(0.3*size_x)] = 6
 
@@ -237,7 +268,7 @@ def main():
     grid_attribs[:,:,12:] = height_neighbours
 
     # Create grid object using parameters from config + transition function
-    grid = Grid2D(config, (transition_function, grid_attribs))
+    grid = Grid2D(config, (transition_function, time_to_drop, grid_attribs))
 
     # Run the CA, save grid state every generation to timeline
     timeline = grid.run()
