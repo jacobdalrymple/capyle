@@ -220,6 +220,11 @@ The implementation of height in this model begins with an assumption: rate of fl
 
 By calculating the difference in the heights between a cell and its neighborhood, a cell's chance of setting on fire can be affected by the number of on fire cells and this distance.
 
+\subsubsection{Modelling airdropped water}
+As per the specification, ensuring we can air drop water at a custom time interval is required. To achieve this, allowing for a dynamic \code{time\_to\_drop} variable which can be adjusted has been added to the model.
+
+By setting this to different intervals, we can see the effects of dropping water on the fire front.
+
 \subsection{Calculating transitions}
 
 Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our transitions, our grid is computed at every interval using two behaviours, \code{ignite} and \code{reduce\_fuel}, which perform as their names suggest, both returning new, computed versions of the grid.
@@ -289,19 +294,19 @@ After devising a model which can allow for differing wind speeds, heights and va
 
 
 
-  \subsection{Dense forest locations}
+
 
   \subsection{Best water locations}
   Due to the small size of the water available, ensuring the timely deposit of the water is essential to its effectiveness.
 
-  By experimenting with different water locations across the grid, and comparing the amount of time it takes for the fire to reach the city, it is possible to devise an optimal location.
+  By experimenting with different water locations across the grid, and comparing the amount of time it takes for the fire to reach the city, it is possible to devise an optimal location. Setting the wind values to 0 helps remove any wind effects from our initial calculations.
 
   Due to the nature of this solution's implementation, the time step at which water can be dropped can be adjusted. Because this system simulates an `airdrop' of water, it was important to try and simulate the effects of the water being dropped at various different points in time, and at different points on the fire front.
 
   If the water is in place when the fire arrives at a location, the fire would migrate around it. Modelling the effect of the airdrop shows that dropping the water at the right time does make a difference.
 
   \subsubsection{Choosing locations}
-  It is important in our assessment of optimal water location to choose the best areas to sample, not least due to the small size of the water available ($10km^2$)\cite{christopher_2019} suggests the optimal placing of water in a forest fire is near the source, and on the `attacking front' of the fire.
+  It is important in our assessment of optimal water location to choose the best areas to sample, not least due to the small size of the water available ($10km^2$). \cite{christopher_2019} suggests the optimal placing of water in a forest fire is near the source, and on the `attacking front' of the fire.
 
   To this end, the following water placements were devised:
 
@@ -415,7 +420,7 @@ Various wind directions and magnitudes and resultant number of generations taken
 
 
 
-    \begin{figure}[h]
+    \begin{figure}[H]
       \centering
       \includegraphics[width=0.75\linewidth]{imgs/wind/x-15y15_gen329}
       \caption{In extreme South Westerly winds, the fire is affected by the placement of the dense forest, canyon, and water, such that the spread towards the town is slower than that of a fire with lower wind speeds.}
@@ -423,7 +428,7 @@ Various wind directions and magnitudes and resultant number of generations taken
     \end{figure}
 
 
-    \begin{figure}[h]
+    \begin{figure}[H]
       \centering
       \includegraphics[width=0.75\linewidth]{imgs/wind/x-15y-15_gen2337}
       \caption{In extreme North Westerly winds, the majority of the fire spread misses the town. It is only after roughly 2100 generations does the fire eventually spread in the south direction enough to reach the town.}
@@ -440,7 +445,27 @@ Various wind directions and magnitudes and resultant number of generations taken
   % \subsection{Resolution     - 200 x 200}
   % \subsection{Resolution     - 400 x 400}
 \newpage
+\subsection{Dense forest locations}
+There is the opportunity to add additional dense forest to the terrain, vai extension of the existing block. Choosing the best extension of this forest is a trial and error process, for which the following extensions were consulted:
+ \begin{itemize}
+   \item Double the width, the additional on the west side
+   \item Double the width, the additional on the east side
+   \item Double the height, the additional on the north side
+   \item Double the height, the additional on the south side
+ \end{itemize}
 
+ \begin{table}[H]
+  \begin{tabular}{|l|l|}
+  \hline
+  Direction & generations \\ \hline
+  default & 306 \\ \hline
+  to W    & 321 \\ \hline
+  to E    & 309 \\ \hline
+  W + E   & 316 \\ \hline
+  to N    & 320 \\ \hline
+  to S    &     \\ \hline
+  \end{tabular}
+  \end{table}
 
 \section{Discussion of model and conclusions} 
 \section{Conclusion}

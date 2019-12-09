@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  9 DEC 2019 17:59
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  9 DEC 2019 18:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -459,43 +459,44 @@ Overfull \hbox (7.51509pt too wide) in paragraph at lines 134--135
  []
 
 [3] [4] [5] [6] [7] [8]
-Overfull \hbox (20.33464pt too wide) in paragraph at lines 389--399
+Overfull \hbox (20.33464pt too wide) in paragraph at lines 394--404
  [] 
  []
 
 File: imgs/graphs/wind.png Graphic file (type bmp)
 <imgs/graphs/wind.png>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 File: imgs/wind/x-15y15_gen329.png Graphic file (type bmp)
 <imgs/wind/x-15y15_gen329.png>
+[9]
+Overfull \vbox (120.21701pt too high) has occurred while \output is active []
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+ [10]
 File: imgs/wind/x-15y-15_gen2337.png Graphic file (type bmp)
 <imgs/wind/x-15y-15_gen2337.png>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[9] [10] (./report.bbl [11])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 454.
- [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 454.
+ [11] [12] (./report.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 479.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 479.
  (./report.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 454.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 454.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 479.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 479.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 885FE01A4A1FA7EFD233D179AA69E592.
+(rerunfilecheck)             Checksum: 2F2037A8C0BDD22AE9FEEC4A49CD9BAF.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 11740 strings out of 492909
- 165622 string characters out of 6132923
- 292744 words of memory out of 5000000
- 15685 multiletter control sequences out of 15000+600000
+ 11741 strings out of 492909
+ 165632 string characters out of 6132923
+ 291842 words of memory out of 5000000
+ 15686 multiletter control sequences out of 15000+600000
  8630 words of font info for 41 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 33i,10n,45p,856b,491s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 33i,10n,45p,856b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.xdv (13 pages, 237252 bytes).
+Output written on report.xdv (14 pages, 247924 bytes).

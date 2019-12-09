@@ -194,7 +194,7 @@ def main():
     wind_y = 0.01
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
-    time_to_drop = np.array([182])
+    time_to_drop = np.array([-1])
     # 0: Height - Scalar value
     # 1: Flammability
     # 2: Humidity?
