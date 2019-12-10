@@ -133,6 +133,7 @@ INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT imgs/graphs/wind.png
 INPUT imgs/wind/x-15y15_gen329.png
 INPUT imgs/wind/x-15y-15_gen2337.png
+INPUT imgs/graphs/water_gens.png
 INPUT report.bbl
 INPUT report.bbl
 INPUT report.aux

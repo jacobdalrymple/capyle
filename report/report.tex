@@ -19,7 +19,7 @@
 \newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
 
 
-\geometry{lmargin=37mm, rmargin=25mm} 
+\geometry{lmargin=1in, rmargin=1in} 
 
 % Better inline directory listings
 \usepackage{xcolor}
@@ -52,15 +52,18 @@
 \newpage
 
 \section{Abstract}
+This project seeks to expand an existing Cellular Automata Game of Life system developed in \cite{capyle_home_2016} to investigate the effects of differing environmental parameters on a forest fire across a fixed terrain.
+
+By constructing a probabilistic model which takes into account parameters pertinent to fire spread (wind speeds and terrain heights, flammability of different plant life), results which concur with the current body of research have been generated.
 
 \section{Introduction}
 By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of a real forest fire across a simulated environment, dictated by the specification given.
 
-By using a minimal state set and an auxiliary 20-value cell attribute grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
+By using a minimal state set and an ancillary 20-value cell attribute grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
 
 Attempting to relate our simulation to the real world values of forest fires across a similar terrain, we have gradually improved the weighting of various factors to generate a suitable fire spread. 
-
-\section{Introduction and Background: Literature Review}
+% \newpage
+\section{Background: Literature Review}
 % \begin{displayquote}
 %   Your brief restatement of the problem
 %   that you have been asked to solve. Carry out a search of the literature to identify at least two
@@ -134,7 +137,7 @@ Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} al
   The two papers discussed above implement the idea of 'fuel' in different ways. \cite{ALEXANDRIDIS2008191} structures fuel as a property of the states, whereas \cite{HERNANDEZENCINAS20071213} provides different states for different levels of fuel. 
   
   The advantage of moving the fuel state into an attribute of the cell is the greater precision of fuel that can be stored, while also maintaining a smaller amount of states. By limiting fuel state to discrete variables, the forest fire spread will lose valuable resolution which can be maintained with a different data structure.
-
+% \newpage
 \section{Methodology}
 % \begin{displayquote}
 %   - A short summary (IN YOUR OWN WORDS) of how the CA approach can
@@ -211,7 +214,7 @@ In the current system, although humidity attributes are passed for every cell, t
 \subsection{Modelling the effect of wind in the model}
 Wind has a significant effect on wildfires, with research suggesting that even a wind speed of $2$ to $6ms^{-1}$ can increase the spread of the fire by an additional 50\% \cite{Beer1991}. As wind heavily is discussed in both \cite{ALEXANDRIDIS2008191} and \cite{HERNANDEZENCINAS20071213}, factoring wind into this model would effectively build on their findings.
 
-By computing 8 wind weights for each cell that affect the spread of fire in the 8 directions of the model, the directional influence the wind has on the fire front can be simulated. To calculate the wind's affect \cite{ALEXANDRIDIS2008191}'s method will be adapted for this implementation - by using the computed weights present within, we can measure the winds affect in meters per second.
+By computing 8 wind weights for each cell that affect the spread of fire in the 8 directions of the model, the directional influence the wind has on the fire front can be simulated. To calculate the wind's affect \cite{ALEXANDRIDIS2008191}'s method will be adapted for this implementation - by using the computed weights present within, we can measure the winds affect in meters per generation.
 
 For every cell in the grid wind weights are calculated for each of the possible 8 directions the fire could be approaching .i.e North, East, North East etc.
 
@@ -223,12 +226,13 @@ The wind weight can be calculated using the formula:
 \[w = \exp{(a_1 \cdot |v_w|)} \exp{(a_2 \cdot |v_w| \cdot (\cos(\theta) - 1))}\]
 
 Where $a_1$ and $a_2$ are weights, calculated by \cite{ALEXANDRIDIS2008191}, which are derived from studying the growth of the 1992 Spetses Island forest fire.\\
-These calculations can be done in the preprocessing steps before the simulation runs reducing the computational complexity of the simulation.
+These calculations can be done in the preprocessing steps before the simulation runs, reducing the computational complexity of the simulation.
 
 \subsubsection{Modelling the effect of height in the model}
 The implementation of height in this model begins with an assumption: rate of flammability is inversely proportional to the height difference.
 
-By calculating the difference in the heights between a cell and its neighborhood, a cell's chance of setting on fire can be affected by the number of on fire cells and this distance.
+
+In the setup phase, heights are defined for each cell. Each cell has access to the heights of its neighbours through the cell attributes grid. During the ignition probability calculation, the height weights can then be calculated from the values in the cell attributes grid (done so in the \code{cal\_height\_weight}). By calculating the difference in the heights between a cell and its neighborhood, a cell's chance of setting on fire can be affected by the number of on fire cells and this distance. 
 
 \subsubsection{Modelling airdropped water}
 As per the specification, ensuring we can air drop water at a custom time interval is required. To achieve this, allowing for a dynamic \code{time\_to\_drop} variable which can be adjusted has been added to the model.
@@ -256,9 +260,7 @@ Using the methods defined in \cite{ALEXANDRIDIS2008191} as a basis for our trans
 
 % Calculate wind weight, initially 0, (8,200,200), wind weight increased by number of neighbours on fire.
 
-Ignite works by calculating an ignition probability for each cell, then generating a random threshold probability for each cell. If the calculated ignition probability is larger than the random threshold, then in the next time step that cell is to catch fire.
-
-The ignition probability of cell $c$ is calculated as follows:
+Ignite works by assigning a probability that a cell will transition into a burning state, the ignition probability of cell $c$ is calculated as follows:
 
 \[ prob(c) = 0.5n(c)*f(c)*w(c)*h(c)*v \]
 
@@ -288,7 +290,7 @@ Similarly, the wind weight for a cell is computed by consulting the 8-dimensiona
 The fuel reduction technique considers every cell in the grid whose fuel attribute is greater than 0. The algorithm subtracts the \code{rate\_of\_flam} attribute from the current \code{fuel} value, clipping the results to 0. 
 
 % Because the \code{rate\_of\_flam} attribute is provided for each cell at setup, representing the average loss of fuel per time step, tweaking the fuel values to closely mimic their real world counter parts is essential.
-
+% \newpage
 \section{Results}
 % \begin{displayquote}
 %   In this section you should describe what simulations you
@@ -297,10 +299,10 @@ The fuel reduction technique considers every cell in the grid whose fuel attribu
 % where appropriate, line graphs) to display your results and you should also describe your results in
 % text. Additional results can be included in an appendix
 % \end{displayquote}
-After devising a model which can allow for differing wind speeds, heights and various different types of flammable land on a cellular automata grid, investigations into the possible scenarios requested by the town officials can begin. It has been suggested that a forest fire can travel anywhere between $0.46ms^{-1}$ \cite{viegas2009recent} to $2.60ms^{-1}$, depending on wind speed. As listed by the provided specification, the proposed location of the incinerator is $70.71km$ away from the furthest edge of the town. 
+After devising a model which can allow for differing wind speeds, heights and various different types of flammable land on a cellular automata grid, investigations into the possible scenarios requested by the town officials can begin. It has been suggested that a forest fire can travel anywhere between $0.46ms^{-1}$ \cite{viegas2009recent}. As listed by the provided specification, the proposed location of the incinerator is $70.71km$ away from the furthest edge of the town. 
 
 % TODO: Calculate relative speed
-% This would indicate it would only take 8.5 hours to reach the town?
+This would indicate it would only take 72.7 hours to reach the town. This would mean that each generation is equal to $502.4s$, on the assumption that the average speed of a wildfire is $0.46ms^{-1}$.
 
 
 
@@ -360,14 +362,14 @@ Various wind directions and magnitudes and resultant number of generations taken
     The results presented above suggest a successful wind technique has been implemented: the winds that blow away from the town do result in an increased number of generations before the fire hits.
     
     
-    \begin{figure}[h]
+    \begin{figure}[H]
       \centering
         \includegraphics[width=\linewidth]{imgs/graphs/wind.png}
       \caption{Graph showing the number of generations taken to reach the city against differing wind speeds.}
       \label{}
     \end{figure}
 
-    There are two notable values in the wind data that could be seen as outliers, and such deserve discussion.
+    % There are two notable values in the wind data that could be seen as outliers, and such deserve discussion.
   
 
 
@@ -380,7 +382,7 @@ Various wind directions and magnitudes and resultant number of generations taken
     \end{figure}
 
 
-    \begin{figure}[H]
+    \begin{figure}[h]
       \centering
       \includegraphics[width=0.75\linewidth]{imgs/wind/x-15y-15_gen2337}
       \caption{In extreme North Westerly winds, the majority of the fire spread misses the town. It is only after roughly 2100 generations does the fire eventually spread in the south direction enough to reach the town.}
@@ -436,45 +438,49 @@ Various wind directions and magnitudes and resultant number of generations taken
 
   Due to the nature of this solution's implementation, the time step at which water can be dropped can be adjusted. Because this system simulates an `airdrop' of water, it was important to try and simulate the effects of the water being dropped at various different points in time, and at different points on the fire front.
 
-  If the water is in place when the fire arrives at a location, the fire would migrate around it. Modelling the effect of the airdrop shows that dropping the water at the right time does make a difference.
-
   \subsubsection{Choosing locations}
   It is important in our assessment of optimal water location to choose the best areas to sample, not least due to the small size of the water available ($10km^2$). \cite{christopher_2019} suggests the optimal placing of water in a forest fire is near the source, and on the `attacking front' of the fire.
 
   To this end, the following water placements were devised:
 
   \begin{itemize}
-    \item[(130,10).] The northern end of the canyon - This is to try and make a blockade which extends the journey of the fire.
-    \item[(130,140).] The southern end of the canyon - similar tactic.
     \item[(190, 200).]  The top right. What would happen if the fire could be stopped early into its journey?
-    \item[ (10,182).] The top of the town. If for whatever reason it wasn't feasible for the crews to reach the start of the fire, would an effective preventative measure be blocking the surrounding area near the town?
     \item[ (10, 190).] Bottom right hand side of the town. A similar tactic as above. These are the nearest two sides to the wildfire front.
+    \item[(130,140).] The southern end of the canyon - similar tactic.
     \item[ (80, 100).] Between the lake and the dense forest - Does decreasing this area make a difference?
+    \item[ (10,182).] The top of the town. If for whatever reason it wasn't feasible for the crews to reach the start of the fire, would an effective preventative measure be blocking the surrounding area near the town?
     \item[ (80, 75).] The same tactic but closer to the lake    
+    \item[(130,10).] The northern end of the canyon - This is to try and make a blockade which extends the journey of the fire.
   \end{itemize}
 
   \subsubsection{Results}
 
 
     \textit{Default number of generations: 306} \\
-    $c$ is the generation at which the fire reaches the square where the water is to be placed. \\
-    $gens_{x}$ is the number of generations is takes for the fire to reach the town when the fire is placed at generation $x$.
+    $c$ is the generation at which the fire reaches the water's eventual location. \\
+    $gens_{x}$ is the number of generations it takes for the fire to reach the town when the water is placed at generation $x$.
 
+  % Change to one column?
+      \begin{table}[H]
+        \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        Water coordinates    &  $c$ & $gens_0$ & $gens_{c}$ & $gens_{c+10}$ & $\Delta gens_0$ & $\Delta gens_c$ & $\Delta gens_{c+10}$ \\ \hline
+        (190, 200), (200,10) & 0   & ∞     & ∞       & ∞         & ∞        & ∞        & ∞           \\ \hline
+        (10, 190), (20,200)  & 295 & 314   & 310     & 306       & 8        & 4        & 0           \\ \hline
+        (130,140), (140, 15) & 172 & 312   & 304     & 298       & 6        & -2       & -8          \\ \hline
+        (80,100),(90,11)     & 157 & 309   & 309     & 306       & 3        & 3        & 0           \\ \hline
+        (10,182), (20, 192)  & 290 & 308   & 313     & 307       & 2        & 7        & 1           \\ \hline
+        (80, 75), (90,85)    & 150 & 303   & 310     & 309       & -3       & 4        & 3           \\ \hline
+        (130,10), (140, 20)  & 77  & 303   & 311     & 306       & -3       & 5        & 0           \\ \hline
+        \end{tabular}
+        \end{table}
 
-    \begin{table}[H]
-      \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-      \hline
-      $x_1$ , $y_1$                                             & $x_2, y_2$ & $c$ & $gens_0$ & $gens_{c}$ & $gens_{c+10}$ & $\Delta gens_0$ & $\Delta gens_c$ & $\Delta gens_{c+10}$ \\ \hline
-      10,190                                               & 20,200       & 295      & 314      & 310       & 306           & \textbf{8}             & 4                 & 0                    \\ \hline
-      10,   182  & 20, 192      & 290      & 308      & 313       & 307           & 2             & 7                 & 1                    \\ \hline
-      130,   140 & 140, 150     & 172      & 312      & 304       & 298           & 6             & -2                & -8                   \\ \hline
-      80,100                                               & 90,110       & 157      & 309      & 309       & 306           & 3             & 3                 & 0                    \\ \hline
-      80,75                                                & 90,85        & 150      & 303      & 310       & 309           & -3            & 4                 & 3                    \\ \hline
-      130,10                                               & 140,20       & 77       & 303      & 311       & 306           & -3            & 5                 & 0                    \\ \hline
-      190   ,200 & 200, 10      & 0        & ∞        & ∞         & ∞             & ∞             & ∞                 & ∞                    \\ \hline
-      \end{tabular}
-      \end{table}
-
+        \begin{figure}[h]
+          \centering
+            \includegraphics[width=\linewidth]{imgs/graphs/water_gens.png}
+          \caption{Graph showing the change in generations taken to reach city, caused by the differing water placements at different generations.}
+          \label{}
+        \end{figure}
       % Because SW wind produced the a fire front which met the town the quickest, and dropping water at $\Delta gens_c$ produced the greatest increase to generations on average, testing different water locations within this domain was also performed.
 
 
@@ -536,6 +542,7 @@ There is the opportunity to add additional dense forest to the terrain, vai exte
     \end{tabular}
     \end{table}
 
+\newpage
 \section{Discussion of model and conclusions} 
 \section{Conclusion}
 
