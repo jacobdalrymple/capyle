@@ -173,8 +173,8 @@ def cal_wind_spread_vectors(wind_x, wind_y):
 def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
-    wind_x = -10
-    wind_y = 10
+    wind_x = 0.001
+    wind_y = 0.001
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
     time_to_drop = np.array([295])
@@ -199,7 +199,7 @@ def main():
     config.initial_grid[ int( 0.2*size_y ) : int( 0.3*size_y), int(0.1*size_x):int(0.3*size_x)] = 6
 
     #Fire
-    config.initial_grid[ 0, size_x-1] = 4
+    config.initial_grid[ 0, 0] = 4
 
     #Town
     town_x_coords = [0, int(0.05*size_x)]
