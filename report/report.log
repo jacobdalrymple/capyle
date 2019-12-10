@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  9 DEC 2019 18:26
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.9.29)  10 DEC 2019 00:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -458,8 +458,8 @@ Overfull \hbox (7.51509pt too wide) in paragraph at lines 134--135
 []\TU/lmr/m/n/10.95 The two papers discussed above implement the idea of ’fuel’ in different ways. [][]Alexandridis
  []
 
-[3] [4] [5] [6] [7] [8]
-Overfull \hbox (20.33464pt too wide) in paragraph at lines 394--404
+[3] [4] [5] [6]
+Overfull \hbox (22.99548pt too wide) in paragraph at lines 338--348
  [] 
  []
 
@@ -470,21 +470,26 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 File: imgs/wind/x-15y15_gen329.png Graphic file (type bmp)
 <imgs/wind/x-15y15_gen329.png>
-[9]
+[7]
 Overfull \vbox (120.21701pt too high) has occurred while \output is active []
 
- [10]
+ [8]
 File: imgs/wind/x-15y-15_gen2337.png Graphic file (type bmp)
 <imgs/wind/x-15y-15_gen2337.png>
- [11] [12] (./report.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 479.
+ [9]
+Overfull \hbox (4.74693pt too wide) in paragraph at lines 457--468
+[][] 
+ []
+
+[10] [11] [12] (./report.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 540.
  [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 479.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 540.
  (./report.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 479.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 479.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 540.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 540.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 2F2037A8C0BDD22AE9FEEC4A49CD9BAF.
+(rerunfilecheck)             Checksum: 42F07D902D610FF2C37711973154B50F.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -493,10 +498,10 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  11741 strings out of 492909
  165632 string characters out of 6132923
- 291842 words of memory out of 5000000
+ 291841 words of memory out of 5000000
  15686 multiletter control sequences out of 15000+600000
  8630 words of font info for 41 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  33i,10n,45p,856b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.xdv (14 pages, 247924 bytes).
+Output written on report.xdv (14 pages, 248824 bytes).

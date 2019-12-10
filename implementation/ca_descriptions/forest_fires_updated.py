@@ -119,6 +119,7 @@ def transition_function(grid, neighbourstates, neighbourcounts, time_to_drop, gr
     and return the new grid"""
     # print(time_to_drop)
     # print(time_to_drop[0])
+    print(time_to_drop[0])
     if(time_to_drop[0] == 0):
         square = grid.shape[0]
         offset_y = 0
@@ -129,10 +130,10 @@ def transition_function(grid, neighbourstates, neighbourcounts, time_to_drop, gr
         # offset_x = 0
         # left_x = offset_x+int(0.05*square)
         # right_x = left_x+int(0.05*square)
-        top_y = 140
+        top_y = 0
         bottom_y = top_y + 10
 
-        left_x = 130
+        left_x = 189
         right_x = left_x + 10
         print("("+str(left_x)+","+str(top_y)+")",
               "("+str(right_x)+","+str(bottom_y)+")")
@@ -190,11 +191,14 @@ def cal_wind_spread_vectors(wind_x, wind_y):
 def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
-    wind_x = 0.01
-    wind_y = 0.01
+    wind_x = -10
+    # wind_x = 0.01
+
+    wind_y = 10
+    # wind_y = 0.01
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
-    time_to_drop = np.array([-1])
+    time_to_drop = np.array([295])
     # 0: Height - Scalar value
     # 1: Flammability
     # 2: Humidity?
