@@ -173,8 +173,8 @@ def cal_wind_spread_vectors(wind_x, wind_y):
 def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
-    wind_x = -10
-    wind_y = 10
+    wind_x = -15
+    wind_y = 15
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
     time_to_drop = np.array([295])

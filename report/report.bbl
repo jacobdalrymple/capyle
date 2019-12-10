@@ -1,0 +1,342 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Alexandridis%
+, Vakalis%
+, Siettos%
+\BCBL {}\ \BBA {} Bafas%
+}{%
+Alexandridis%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2008}}%
+}]{%
+ALEXANDRIDIS2008191}
+\APACinsertmetastar {%
+ALEXANDRIDIS2008191}%
+\begin{APACrefauthors}%
+Alexandridis, A.%
+, Vakalis, D.%
+, Siettos, C.%
+\BCBL {}\ \BBA {} Bafas, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A cellular automata model for forest fire spread
+  prediction: The case of the wildfire that swept through Spetses Island in
+  1990} {A cellular automata model for forest fire spread prediction: The case
+  of the wildfire that swept through spetses island in 1990}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Applied Mathematics and Computation}{204}{1}{191 -
+  201}.
+\newblock
+\begin{APACrefURL}
+  \url{http://www.sciencedirect.com/science/article/pii/S0096300308004943}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{https://doi.org/10.1016/j.amc.2008.06.046}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Beer%
+}{%
+Beer%
+}{%
+{\protect \APACyear {1991}}%
+}]{%
+Beer1991}
+\APACinsertmetastar {%
+Beer1991}%
+\begin{APACrefauthors}%
+Beer, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1991}{Feb}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {The interaction of wind and fire} {The interaction of
+  wind and fire}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Boundary-Layer Meteorology}{54}{3}{287--308}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/BF00183958} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/BF00183958} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+\APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
+\APACcitebtitle {CAPyLE | cross-platform teaching tool}}{%
+{\protect \APACyear {2016}}%
+}]{%
+capyle_home_2016}
+\APACinsertmetastar {%
+capyle_home_2016}%
+\APACrefbtitle {CAPyLE | cross-platform teaching tool.} {Capyle |
+  cross-platform teaching tool.}
+\newblock
+\APACrefYearMonthDay{2016}{May}{}.
+\newblock
+\APACaddressPublisher{}{University of Sheffield}.
+\newblock
+\begin{APACrefURL} \url{https://pjworsley.github.io/capyle/} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Christopher%
+}{%
+Christopher%
+}{%
+{\protect \APACyear {2016}}%
+}]{%
+christopher_2019}
+\APACinsertmetastar {%
+christopher_2019}%
+\begin{APACrefauthors}%
+Christopher, B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+\APACrefbtitle {Does Using Airplanes to Put out Forest Fires Actually Work?}
+  {Does using airplanes to put out forest fires actually work?}
+\newblock
+\begin{APACrefURL}
+  \url{https://priceonomics.com/does-using-airplanes-to-put-out-forest-fires/}
+  \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Clarke%
+, Brass%
+\BCBL {}\ \BBA {} Riggan%
+}{%
+Clarke%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1994}}%
+}]{%
+clarke1994cellular}
+\APACinsertmetastar {%
+clarke1994cellular}%
+\begin{APACrefauthors}%
+Clarke, K\BPBI C.%
+, Brass, J\BPBI A.%
+\BCBL {}\ \BBA {} Riggan, P\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1994}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A cellular automaton model of wildfire propagation and
+  extinction} {A cellular automaton model of wildfire propagation and
+  extinction}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Photogrammetric Engineering and Remote Sensing. 60
+  (11): 1355-1367}{60}{11}{1355--1367}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Encinas%
+, White%
+, del Rey%
+\BCBL {}\ \BBA {} Sánchez%
+}{%
+Encinas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2007}}%
+}]{%
+HERNANDEZENCINAS20071213}
+\APACinsertmetastar {%
+HERNANDEZENCINAS20071213}%
+\begin{APACrefauthors}%
+Encinas, L\BPBI H.%
+, White, S\BPBI H.%
+, del Rey, A\BPBI M.%
+\BCBL {}\ \BBA {} Sánchez, G\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2007}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Modelling forest fire spread using hexagonal cellular
+  automata} {Modelling forest fire spread using hexagonal cellular
+  automata}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Applied Mathematical Modelling}{31}{6}{1213 - 1227}.
+\newblock
+\begin{APACrefURL}
+  \url{http://www.sciencedirect.com/science/article/pii/S0307904X06000916}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{https://doi.org/10.1016/j.apm.2006.04.001}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Guzman-Morales%
+, Gershunov%
+, Theiss%
+, Li%
+\BCBL {}\ \BBA {} Cayan%
+}{%
+Guzman-Morales%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+doi:10.1002/2016GL067887}
+\APACinsertmetastar {%
+doi:10.1002/2016GL067887}%
+\begin{APACrefauthors}%
+Guzman-Morales, J.%
+, Gershunov, A.%
+, Theiss, J.%
+, Li, H.%
+\BCBL {}\ \BBA {} Cayan, D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Santa Ana Winds of Southern California: Their
+  climatology, extremes, and behavior spanning six and a half decades} {Santa
+  ana winds of southern california: Their climatology, extremes, and behavior
+  spanning six and a half decades}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Geophysical Research Letters}{43}{6}{2827-2834}.
+\newblock
+\begin{APACrefURL}
+  \url{https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL067887}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1002/2016GL067887} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ntinas%
+, Moutafis%
+, Trunfio%
+\BCBL {}\ \BBA {} Sirakoulis%
+}{%
+Ntinas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+ntinas2017parallel}
+\APACinsertmetastar {%
+ntinas2017parallel}%
+\begin{APACrefauthors}%
+Ntinas, V\BPBI G.%
+, Moutafis, B\BPBI E.%
+, Trunfio, G\BPBI A.%
+\BCBL {}\ \BBA {} Sirakoulis, G\BPBI C.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Parallel fuzzy cellular automata for data-driven
+  simulation of wildfire spreading} {Parallel fuzzy cellular automata for
+  data-driven simulation of wildfire spreading}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of computational science}{21}{}{469--485}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Thompson%
+, Calkin%
+, Finney%
+, Ager%
+\BCBL {}\ \BBA {} Gilbertson-Day%
+}{%
+Thompson%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+Thompson2011}
+\APACinsertmetastar {%
+Thompson2011}%
+\begin{APACrefauthors}%
+Thompson, M\BPBI P.%
+, Calkin, D\BPBI E.%
+, Finney, M\BPBI A.%
+, Ager, A\BPBI A.%
+\BCBL {}\ \BBA {} Gilbertson-Day, J\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{Aug}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {Integrated national-scale assessment of wildfire risk to
+  human and ecological values} {Integrated national-scale assessment of
+  wildfire risk to human and ecological values}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Stochastic Environmental Research and Risk
+  Assessment}{25}{6}{761--780}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/s00477-011-0461-0}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/s00477-011-0461-0} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Trunfio%
+, D’Ambrosio%
+, Rongo%
+, Spataro%
+\BCBL {}\ \BBA {} Di~Gregorio%
+}{%
+Trunfio%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+trunfio2011new}
+\APACinsertmetastar {%
+trunfio2011new}%
+\begin{APACrefauthors}%
+Trunfio, G\BPBI A.%
+, D’Ambrosio, D.%
+, Rongo, R.%
+, Spataro, W.%
+\BCBL {}\ \BBA {} Di~Gregorio, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A new algorithm for simulating wildfire spread through
+  cellular automata} {A new algorithm for simulating wildfire spread through
+  cellular automata}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{ACM Transactions on Modeling and Computer Simulation
+  (TOMACS)}{22}{1}{6}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Viegas%
+\ \protect \BOthers {.}}{%
+Viegas%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2009}}%
+}]{%
+viegas2009recent}
+\APACinsertmetastar {%
+viegas2009recent}%
+\begin{APACrefauthors}%
+Viegas, D\BPBI X.%
+\BCBT {}\ \BOthersPeriod {.}
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2009}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Recent forest fire related accidents in Europe} {Recent
+  forest fire related accidents in europe}.{\BBCQ}
+\newblock
+
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
