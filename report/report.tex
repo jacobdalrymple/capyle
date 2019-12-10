@@ -294,9 +294,14 @@ This would indicate it would only take 72.7 hours to reach the town. This would 
 
 
 
+  \subsection{Effects of Different Initial Fire Locations}
 
-
-
+  The number of generations its takes the fire to reach the town based on the different fire start locations are listed below:
+  \begin{itemize}
+    \item Power plant (north west corner) $= 226$ generations.
+    \item Incinerator (north east corner) $= 305$ generations.
+  \end{itemize}
+  The number of generations is taken as an average over 5 runs.
 
   \subsection{Wind Direction}
   The town is situated $70.81km$ away from the incinerator in a south easterly direction - a wind in this direction would increase the velocity towards the town. Although the specification presented does not specify a region of the United States, a report by \cite{Thompson2011} suggests the state of California is most prone to wildfires (50.22\%). 
@@ -536,8 +541,47 @@ There is the opportunity to add additional dense forest to the terrain, vai exte
 \newpage
 \section{Discussion of model and conclusions}
 
+The results from the simulations show that the town is at great risk if a forest fire is ignited at the incinerator and/or power plant site.\\
+
+\subsubsection{Effects of Fire's Start Location}
+
+The model shows that a forest fire started at the powerplant will reach the town 79 generations sooner than at the incinerator with neutral wind conditions. As a results a fire originating from the power plant has the potential to be more damaging to less time for the town to react.
+
+\subsubsection{Effects of Wind}
+
+The model shows that the wind has a big impact on the time it takes for the fire to spread to the town, in neutral conditions it takes a forest fire 306 generations to reach the town; with a south-westerly wind reducing the amount of time to 298 generations and a north-eastern wind increasing to 2337 generations, these results line up with intuition.
+
+The amount a south-westerly wind affects the speed of fire is extremely variable ranging from 280 to 350 generations to reach the town due to whether or not the canyon would catch fire. With higher wind speeds decreasing the chance the canyon ignites leading to higher variability in higher wind speeds.
+
+This is due to forest fires traveling slowly downhill compared to level ground, and when a fire front reaches a sheer drop, as is the case in the model, the probability of the canyon floor alighting is very low.
+
+When the canyon doesn't alight it acts as a barrier slowing down the fire, however when it does alight it accelerates the fire front towards the town due to the high flammability of the scrubland compounded by the uphill slopes increasing the speed of the fire.
+
+Due to the stochastic nature of whether the canyon alights or not, variability is introduced in each iteration. This allows for the model to explore different possible outcomes through the mode behaving differently every time.
+
+The model captures the similar wind effects as \cite{HERNANDEZENCINAS20071213} in term of how the shape of the fire front is influenced by the wind. \cite{ALEXANDRIDIS2008191}'s method of wind weighting is implemented in this model and the same behaviours in regard to wind are observed in the two models with the wind guiding the primary direction of the fire front.
+
+\subsubsection{Effects of Water Drop Locations}
+
+In modeling the effect of dropping $10km^{2}$ area of water in a variety of locations the maximal change in number of generations to reach the town is $\pm 8$. This suggests this isn't an effective strategy which is supported by relevant literature \cite{christopher_2019}.
+
+\subsubsection{Effects of Dense Forest Area}
+
+Extending the dense forest area towards the east was found to reduce the number of generations it took for the fire to reach the town the most by 22 generations. This measure was the most effective in delaying the fire front when a strong south-western wind was introduced, delaying the fire front by 56 generations.\\
+This could be a potential counter measure in a worst case scenario of a forest fire burning with a north-westerly wind to delay the fire front for evacuation.
+
+\subsubsection{Limitations and Possible Improvements of the Model}
+
+The main limitation of the model are the simplification of height with a basic proportional relationship being assumed, an improvement to this would to use a more complex approach that more accurately models the relationship between height and fire fronts.
+
+A hexagonal grid could be implemented in steed of a grid would also better model the spacial relationship of a forest fire as shown in \cite{HERNANDEZENCINAS20071213}'s approach, however the increased computational run time induced by this method was a factor for using a grid.
+Other parameters could of be used in the formulation of the ignition probability such as humidity, however the lack of data to implement an accurate approach was a limiting factor.
+
+Another improvement would be the ability to model more solutions to the forest fire such as fire breaks or controlled burning, such additions would provide important insights in forest fire counter measures.
 
 \section{Conclusion}
+
+In conclusion the addition of a new incinerator greatly increases the risk of forest fires in an area already vulnerable due to the power plant. Counter measures explored in this report are not enough to stop a forest fire, with air dropping water having a negligible impact and extending dense forest only delaying the forest fire.
 
 \newpage
 \renewcommand{\bibname}{References}
