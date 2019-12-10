@@ -54,7 +54,7 @@
 \section{Abstract}
 
 \section{Introduction}
-By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of real forest fire across a simulated environment, dictated by the specification given.
+By implementing a 6-state based model of fire spread across a variable-height terrain with wind and areas of varying flammability, we have been able to simulate the spread of a real forest fire across a simulated environment, dictated by the specification given.
 
 By using a minimal state set and an auxiliary 20-value cell attribute grid, we can model complex relationships between the properties of an area in a forest fire to create a stochastic state transition function for each cell in the next time step.
 
@@ -211,11 +211,19 @@ In the current system, although humidity attributes are passed for every cell, t
 \subsection{Modelling the effect of wind in the model}
 Wind has a significant effect on wildfires, with research suggesting that even a wind speed of $2$ to $6ms^{-1}$ can increase the spread of the fire by an additional 50\% \cite{Beer1991}. As wind heavily is discussed in both \cite{ALEXANDRIDIS2008191} and \cite{HERNANDEZENCINAS20071213}, factoring wind into this model would effectively build on their findings.
 
-By computing wind vectors for the whole grid at setup time, we can then use the difference in wind angle and `flame angle` to predict the effect that the wind will have on the fire, and consequently, the resultant directional changes.
+By computing 8 wind weights for each cell that affect the spread of fire in the 8 directions of the model, the directional influence the wind has on the fire front can be simulated. To calculate the wind's affect \cite{ALEXANDRIDIS2008191}'s method will be adapted for this implementation - by using the computed weights present within, we can measure the winds affect in meters per second.
 
-The flame angle can be defined as the angle of between the direction of the fire spread and the current cell.
+For every cell in the grid wind weights are calculated for each of the possible 8 directions the fire could be approaching .i.e North, East, North East etc.
 
-By initially setting wind to be two scalars, an  $\pm$ value for wind in the X axis, and in the Y axis, and then converting this to a vector, we can then use $acos(v_1,v_2)$ where our wind vector $= v_1$, and our `fire angle' $= v_2$, to calculate the possible `magnitude` of fire for each neighbour of each cell. As each cell has 8 neighbours, an 8-value array is generated, and added to our cell attributes grid.
+By initially setting wind to be two scalars, an $\pm$ value for wind in the X axis, and in the Y axis, and then converting this to a vector, we can then find the angle between the wind vector $v_w$ and each of the fire direction vectors $v_f$ using the cosine rule:
+\[\theta = \arccos{ \frac{v_w \cdot v_f}{|v_w||v_f|} }\]
+
+The wind weight can be calculated using the formula:
+
+\[w = \exp{(a_1 \cdot |v_w|)} \exp{(a_2 \cdot |v_w| \cdot (\cos(\theta) - 1))}\]
+
+Where $a_1$ and $a_2$ are weights, calculated by \cite{ALEXANDRIDIS2008191}, which are derived from studying the growth of the 1992 Spetses Island forest fire.\\
+These calculations can be done in the preprocessing steps before the simulation runs reducing the computational complexity of the simulation.
 
 \subsubsection{Modelling the effect of height in the model}
 The implementation of height in this model begins with an assumption: rate of flammability is inversely proportional to the height difference.
@@ -537,4 +545,4 @@ There is the opportunity to add additional dense forest to the terrain, vai exte
 \bibliography{Bibliography.bib}
 
 
-\end{document}
+\end{document} 
