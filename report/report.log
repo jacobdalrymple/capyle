@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2019.11.7)  10 DEC 2019 13:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2019.11.7)  10 DEC 2019 13:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -538,12 +538,12 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
                                                   \fi \fi 
 l.513 
        </home/jacob/COM3524_bioinspired_computing/assignment/capyle/report/imgs/graphs/water_gens.png>] [13] [14] (/home/jacob/COM3524_bioinspired_computing/assignment/capyle/report/report.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 548.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 567.
  [15]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 548.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 567.
  (/home/jacob/COM3524_bioinspired_computing/assignment/capyle/report/report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 548.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 548.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 567.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 567.
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 78698D42E6E2613A81F3D024D49E497E;1243.
 
@@ -560,7 +560,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  37i,10n,37p,884b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /home/jacob/COM3524_bioinspired_computing/assignment/capyle/report/report.pdf (16 pages, 249257 bytes).
+Output written on /home/jacob/COM3524_bioinspired_computing/assignment/capyle/report/report.pdf (16 pages, 250313 bytes).
 PDF statistics:
  313 PDF objects out of 1000 (max. 8388607)
  274 compressed objects within 3 object streams
