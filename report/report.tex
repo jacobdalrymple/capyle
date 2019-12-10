@@ -18,7 +18,7 @@
 \newcounter{magicrownumbers}
 \newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
 
-
+\DeclareUnicodeCharacter{00A0}{ }
 \geometry{lmargin=1in, rmargin=1in} 
 
 % Better inline directory listings
@@ -117,18 +117,6 @@ Although the inclusion of additional parameters in \cite{ALEXANDRIDIS2008191} al
 
   
     % The authors states several key criteria which affect the spread of wildfire across a terrain.
-    
-
-  
-  % The CA has four necessary states:
-  
-  % $State = 1$: The cell contains no forest fuel. This state may describe the cells corresponding to parts of the city with no vegetation, rural areas with no vegetation etc. We assume that cells that are in this state cannot be burned.
-  
-  % $State = 2$: The cell contains forest fuel that has not ignited.
-  
-  % $State = 3$: The cell contains forest fuel that is burning.
-  
-  % $State = 4$: The cell contained forest fuel that has been burned down.
 
   The use of additional parameters such as humidity to predict the spread of the forest fire, along with their use of real world GIS values gives rise to a greater accuracy of results (in relation to the real world spread of forest fires) when compared to the default criteria to be implemented.
 
@@ -465,7 +453,7 @@ Various wind directions and magnitudes and resultant number of generations taken
         \begin{tabular}{|l|l|l|l|l|l|l|l|}
         \hline
         Water coordinates    &  $c$ & $gens_0$ & $gens_{c}$ & $gens_{c+10}$ & $\Delta gens_0$ & $\Delta gens_c$ & $\Delta gens_{c+10}$ \\ \hline
-        (190, 200), (200,10) & 0   & ∞     & ∞       & ∞         & ∞        & ∞        & ∞           \\ \hline
+        (190, 200), (200,10) & 0   & $\infty$     & $\infty$       & $\infty$         & $\infty$        & $\infty$        & $\infty$           \\ \hline
         (10, 190), (20,200)  & 295 & 314   & 310     & 306       & 8        & 4        & 0           \\ \hline
         (130,140), (140, 15) & 172 & 312   & 304     & 298       & 6        & -2       & -8          \\ \hline
         (80,100),(90,11)     & 157 & 309   & 309     & 306       & 3        & 3        & 0           \\ \hline
