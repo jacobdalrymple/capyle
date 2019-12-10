@@ -19,7 +19,6 @@ from math import pi
 
 import time
 from math import floor
-# np.set_printoptions(threshold=sys.maxsize)
 
 def setup(args):
     """Set up the config object used to interact with the GUI"""
@@ -73,8 +72,7 @@ def cal_wind_weight(wind_spread, neighbour_states):
     for i in range(neighbour_states.shape[0]):
         index = neighbour_states[i] == 4
         wind_weight[index] += wind_spread[index,i]
-    # print("\n\n\n\nwind_weight")
-    # print(wind_weight)
+
     return wind_weight
 
 def cal_height_weight(height, height_neighbours, neighbour_states):
@@ -83,14 +81,9 @@ def cal_height_weight(height, height_neighbours, neighbour_states):
 
     for i in range(neighbour_states.shape[0]):
         index = neighbour_states[i] == 4
-        # print(index)
         height_diff = height[index] - height_neighbours[index,i]
-        #height_angle = np.arctan(height_diff/5000)
-        #weight = np.exp(0.078 * height_angle[height_angle != 0])
-        #height_weight[index][height_angle != 0] += weight
         height_weight[index] += 0.0051 * height_diff
-    # print("\n\n\n\n height_weight")
-    # print(height_weight.shape )
+
     return height_weight
 
 
@@ -108,8 +101,6 @@ def ignite(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours,
 
 # Vectorised function to reduce fuel based on 5 property arrays given
 def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighbours):
-    # with_spare_fuel = (fuel - rate_of_flam) >= 0
-    # fuel[with_spare_fuel] = np.around(fuel[with_spare_fuel] - rate_of_flam[with_spare_fuel], 3)
     new_fuel = (fuel - rate_of_flam).clip(min=0)
     return np.array([height, rate_of_flam, humidity, new_fuel, *(wind_spread.T), *(height_neighbours.T)]).T
 
@@ -117,19 +108,10 @@ def reduce_fuel(height, rate_of_flam, humidity, fuel, wind_spread, height_neighb
 def transition_function(grid, neighbourstates, neighbourcounts, time_to_drop, grid_attribs ):
     """Function to apply the transition rules
     and return the new grid"""
-    # print(time_to_drop)
-    # print(time_to_drop[0])
     print(time_to_drop[0])
     if(time_to_drop[0] == 0):
         square = grid.shape[0]
         offset_y = 0
-
-        # top_y = offset_y + 200 - int(0.05*square)
-        # bottom_y = top_y + int(0.05*square)
-
-        # offset_x = 0
-        # left_x = offset_x+int(0.05*square)
-        # right_x = left_x+int(0.05*square)
         top_y = 0
         bottom_y = top_y + 10
 
@@ -192,10 +174,7 @@ def main():
     """ Main function that sets up, runs and saves CA"""
     config = setup(sys.argv[1:])
     wind_x = -10
-    # wind_x = 0.01
-
     wind_y = 10
-    # wind_y = 0.01
     grid_attribs = np.zeros((*config.grid_dims, 20))
 
     time_to_drop = np.array([295])
@@ -258,8 +237,6 @@ def main():
 
     transitions = [[1,1], [0,1], [-1,1], [1,0], [0,-1], [1,-1], [0,-1], [-1,-1]]
     height_neighbours = np.zeros((*config.grid_dims, 8))
-
-    #grid_attribs[:,:,0] = 0
 
     for i in range(grid_attribs.shape[0]):
         for j in range(grid_attribs.shape[1]):
